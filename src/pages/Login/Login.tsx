@@ -3,7 +3,7 @@ import React from "react";
 const Login = () => {
   return (
     <div className="flex items-end justify-center h-5/6">
-      <div className="gap-4 pb-14 bg-mywhite rounded-t-xl w-5/6 h-4/5 flex flex-col items-center justify-end">
+      <div className="gap-4 pb-14 bg-mywhite rounded-t-xl w-10/12 h-5/6 flex flex-col items-center justify-end">
         <div>
           <h1 className="text-7xl z-10">이약머약</h1>
         </div>

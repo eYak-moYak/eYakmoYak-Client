@@ -40,10 +40,9 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
         </div>
       </div>
       <nav className="bg-myblue flex justify-center items-center h-16">
-        <ul className="p-3 px-20 flex gap-7 bg-mywhite mt-7 rounded-t-xl">
+        <ul className="p-3 px-40 flex gap-14 bg-mywhite mt-2 rounded-t-xl">
           <li>
             <a href="/upLoad" className="flex gap-2 justify-center items-center">
-              {/* <img src="/assets/header/photoUpload.svg" alt="사진업로드" /> 사진업로드 */}
               <svg width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M25 1.2085C27.0711 1.2085 28.75 2.83147 28.75 4.8335V9.66683C28.75 10.3342 28.1904 10.8752 27.5 10.8752C26.8096 10.8752 26.25 10.3342 26.25 9.66683V4.8335C26.25 4.16616 25.6904 3.62516 25 3.62516H20C19.3096 3.62516 18.75 3.08417 18.75 2.41683C18.75 1.74949 19.3096 1.2085 20 1.2085H25Z"
@@ -93,7 +92,6 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 
           <li>
             <a href="/services" className="flex gap-2 justify-center items-center">
-              {/* <img src="/assets/header/info.svg" alt="복약정보" /> 복약정보 */}
               <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"
@@ -107,7 +105,6 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
           </li>
           <li>
             <a href="/contact" className="flex gap-2 justify-center items-center">
-              {/* <img src="/assets/header/search.svg" alt="병용금기약품" /> 병용금기약품 */}
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_62_863)">
                   <path
@@ -120,7 +117,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
                     <rect width="28" height="28" fill="white" />
                   </clipPath>
                 </defs>
-              </svg>{" "}
+              </svg>
               병용금기약품
             </a>
           </li>
