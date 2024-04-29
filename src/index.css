@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Laundry_bold";
+  src: url("/public/assets/fonts/Laundry_bold.ttf");
+}
+@font-face {
+  font-family: "Laundry_regular";
+  src: url("/public/assets/fonts/Laundry_regular.ttf");
+}
+@font-face {
+  font-family: "pretendard";
+  src: url("/public/assets/fonts/Pretendard.ttf");
+}

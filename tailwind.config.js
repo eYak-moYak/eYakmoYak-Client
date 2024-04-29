@@ -12,6 +12,11 @@ module.exports = {
         myblue: "#7BC9FF",
         mybgcolor: "#F5F5F5",
       },
+      fontFamily: {
+        laundryBold: ["Laundry_bold"],
+        laundryRegular: ["Laundry_regular"],
+        pretendard: ["pretendard"],
+      },
     },
   },
   plugins: [],
