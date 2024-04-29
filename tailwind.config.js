@@ -10,6 +10,7 @@ module.exports = {
         mymint: "#A3FFD6",
         mypurple: "#8576FF",
         myblue: "#7BC9FF",
+        mybgcolor: "#F5F5F5",
       },
     },
   },
