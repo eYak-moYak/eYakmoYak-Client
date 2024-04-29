@@ -1,6 +1,36 @@
-import React from "react";
+import { useState, ChangeEvent } from "react";
 
 function PhotoUpload() {
+  const [files, setFiles] = useState<File | null>(null);
+  const [showImages, setShowImages] = useState<string[]>([]);
+
+  const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setFiles(event.target.files[0]);
+    }
+
+    const formData = new FormData();
+    if (files) {
+      formData.append("file", files);
+    }
+
+    const result: string = await fetch("http://...", {
+      method: "post",
+      body: formData,
+      headers: {
+        authorization: "Bearer ...",
+      },
+    })
+      .then((res) => res.json())
+      .then((body) => body.url);
+
+    if (result) setShowImages([...showImages, result]);
+  };
+
+  const handleDelete = (idx: number) => {
+    setShowImages([...showImages.slice(0, idx), ...showImages.slice(idx + 1, showImages.length)]);
+  };
+
   return (
     <div className="flex items-end justify-center h-5/6">
       <div className="gap-4 pb-14 bg-mywhite rounded-t-xl w-10/12 h-5/6 flex flex-col items-center justify-end">
@@ -35,9 +65,15 @@ function PhotoUpload() {
             </clipPath>
           </defs>
         </svg>
-        <button type="button" className="bg-myblue w-2/6 h-10 rounded-full">
-          사진 업로드하기
-        </button>
+        <input type="file" accept="image/*" onChange={handleUpload} className="bg-myblue w-2/6 h-10 rounded-full" />
+        {showImages.map((src, idx) => {
+          return (
+            <div>
+              <img src={src} alt={`${src}`} />
+              <button onClick={() => handleDelete(idx)}>X</button>
+            </div>
+          );
+        })}
         <button type="button" className="border-2 border-mybgcolor-50 w-2/6 h-10 rounded-full">
           약 직접 추가
         </button>
