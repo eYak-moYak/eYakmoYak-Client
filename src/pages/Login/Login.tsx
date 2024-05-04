@@ -2,17 +2,25 @@ import React from "react";
 
 const Login = () => {
   return (
-    <div className="flex items-end justify-center h-5/6">
-      <div className="gap-4 pb-14 bg-mywhite rounded-t-xl w-10/12 h-5/6 flex flex-col items-center justify-end">
+    <div className="flex h-5/6 items-end justify-center">
+      <div className="flex h-5/6 w-10/12 flex-col items-center justify-end gap-4 rounded-t-xl bg-mywhite pb-14">
         <div>
-          <h1 className="text-7xl z-10">이약머약</h1>
+          <h1 className="z-10 text-7xl">이약머약</h1>
         </div>
         <p className="flex text-center text-neutral-400">
           약봉투 사진을 업로드하고
-          <br /> 복약정보부터 병용금기 약물 조회까지 <br></br>쉽게 이용하세요! <br></br>지금, 나만의 약사를 만나보세요!
+          <br /> 복약정보부터 병용금기 약물 조회까지 <br></br>쉽게 이용하세요!{" "}
+          <br></br>지금, 나만의 약사를 만나보세요!
         </p>
-        <div className="border-4 border-mybgcolor-50 rounded-full w-40 h-40 bg-mywhite flex justify-center items-center">
-          <svg className="pl-3" width="71" height="78" viewBox="0 0 41 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div className="border-mybgcolor-50 flex h-40 w-40 items-center justify-center rounded-full border-4 bg-mywhite">
+          <svg
+            className="pl-3"
+            width="71"
+            height="78"
+            viewBox="0 0 41 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M23.7656 48H7.48438C5.50066 47.996 3.59938 47.2378 2.19668 45.8912C0.793984 44.5446 0.00412844 42.7194 0 40.815V7.185C0.00412844 5.28064 0.793984 3.45541 2.19668 2.10882C3.59938 0.762225 5.50066 0.00396331 7.48438 0L23.7656 0C25.7493 0.00396331 27.6506 0.762225 29.0533 2.10882C30.456 3.45541 31.2459 5.28064 31.25 7.185V7.5C31.25 7.89782 31.0854 8.27936 30.7924 8.56066C30.4993 8.84196 30.1019 9 29.6875 9C29.2731 9 28.8757 8.84196 28.5826 8.56066C28.2896 8.27936 28.125 7.89782 28.125 7.5V7.185C28.125 6.07507 27.6657 5.0106 26.8482 4.22576C26.0306 3.44092 24.9218 3 23.7656 3H7.48438C6.3282 3 5.21937 3.44092 4.40183 4.22576C3.58429 5.0106 3.125 6.07507 3.125 7.185V40.815C3.125 41.9249 3.58429 42.9894 4.40183 43.7742C5.21937 44.5591 6.3282 45 7.48438 45H23.7656C24.9218 45 26.0306 44.5591 26.8482 43.7742C27.6657 42.9894 28.125 41.9249 28.125 40.815V37.5C28.125 37.1022 28.2896 36.7206 28.5826 36.4393C28.8757 36.158 29.2731 36 29.6875 36C30.1019 36 30.4993 36.158 30.7924 36.4393C31.0854 36.7206 31.25 37.1022 31.25 37.5V40.815C31.2459 42.7194 30.456 44.5446 29.0533 45.8912C27.6506 47.2378 25.7493 47.996 23.7656 48Z"
               fill="#0F0F0F"
