@@ -6,7 +6,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
   return (
-    <div className="w-full bg-myblue">
+    <div className="mb-20 w-full bg-myblue">
       <div className="flex justify-between p-3">
         <div className="flex items-center">
           <svg
