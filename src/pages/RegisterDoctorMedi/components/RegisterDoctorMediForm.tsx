@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ReactComponent as Down } from "../../../assets/registerMedi/down.svg";
 import AutoMediInput from "../../../components/Common/AutoMediInput";
 
-function RegisterMedi() {
+function RegisterDoctorMediForm() {
   // 시간대 선택시 타입 반환
   interface SelectedTimes {
     [key: string]: boolean;
@@ -37,7 +37,6 @@ function RegisterMedi() {
       </div>
       <div className="flex items-center justify-between">
         <AutoMediInput />
-        {/* <input className="h-8 w-72" type="text" placeholder="약 이름" /> */}
         <button className="h-7 w-14" type="button">
           삭제
         </button>
@@ -79,4 +78,4 @@ function RegisterMedi() {
   );
 }
 
-export default RegisterMedi;
+export default RegisterDoctorMediForm;

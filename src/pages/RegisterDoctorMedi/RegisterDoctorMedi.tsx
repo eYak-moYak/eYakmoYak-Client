@@ -1,6 +1,6 @@
 import React from "react";
-import RegisterDoctor from "./components/RegisterDoctor";
-import RegisterMedi from "./components/RegisterMedi";
+import RegisterDoctor from "./components/RegisterDoctorForm";
+import RegisterMedi from "./components/RegisterDoctorMediForm";
 
 function RegisterDoctorMedi() {
   return (
