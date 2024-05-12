@@ -28,14 +28,17 @@ function PhotoUpload() {
   };
 
   const handleDelete = (idx: number) => {
-    setShowImages([...showImages.slice(0, idx), ...showImages.slice(idx + 1, showImages.length)]);
+    setShowImages([
+      ...showImages.slice(0, idx),
+      ...showImages.slice(idx + 1, showImages.length),
+    ]);
   };
 
   return (
-    <div className="flex items-end justify-center h-5/6">
-      <div className="gap-4 pb-14 bg-mywhite rounded-t-xl w-10/12 h-5/6 flex flex-col items-center justify-end">
+    <div className="flex h-5/6 items-end justify-center">
+      <div className="flex h-5/6 w-10/12 flex-col items-center justify-end gap-4 rounded-t-xl bg-mywhite pb-14">
         <div>
-          <h1 className="text-5xl z-10 mb-4">약봉투 사진을 등록하세요</h1>
+          <h1 className="z-10 mb-4 text-5xl">약봉투 사진을 등록하세요</h1>
         </div>
         <p className="flex text-center text-neutral-400">
           잠깐! 사진 가이드를 지켜주세요!
@@ -44,8 +47,18 @@ function PhotoUpload() {
           <br /> 3. 복약 지도문이 잘 펴진 상태의 이미지
           <br /> 4. 글씨가 반사되지 않는 밝은 곳에서 찍은 이미지
         </p>
-        <svg width="120" height="100" viewBox="0 0 105 87" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M99.5 43.2308C99.5 66.7645 77.4088 85.9615 50 85.9615C22.5912 85.9615 0.5 66.7645 0.5 43.2308C0.5 19.697 22.5912 0.5 50 0.5C77.4088 0.5 99.5 19.697 99.5 43.2308Z" fill="white" stroke="#D9D9D9" />
+        <svg
+          width="120"
+          height="100"
+          viewBox="0 0 105 87"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M99.5 43.2308C99.5 66.7645 77.4088 85.9615 50 85.9615C22.5912 85.9615 0.5 66.7645 0.5 43.2308C0.5 19.697 22.5912 0.5 50 0.5C77.4088 0.5 99.5 19.697 99.5 43.2308Z"
+            fill="white"
+            stroke="#D9D9D9"
+          />
           <g clipPath="url(#clip0_105_222)">
             <path
               fillRule="evenodd"
@@ -54,18 +67,36 @@ function PhotoUpload() {
               fill="#0C1C3F"
             />
           </g>
-          <rect x="76.5" y="59.5" width="28" height="24.0738" rx="9.5" fill="white" stroke="#D9D9D9" />
+          <rect
+            x="76.5"
+            y="59.5"
+            width="28"
+            height="24.0738"
+            rx="9.5"
+            fill="white"
+            stroke="#D9D9D9"
+          />
           <path
             d="M90.8334 65.4847C90.8334 65.0867 90.4603 64.7642 90 64.7642C89.5398 64.7642 89.1667 65.0867 89.1667 65.4847V71.2488H82.5C82.0398 71.2488 81.6667 71.5713 81.6667 71.9693C81.6667 72.3672 82.0398 72.6898 82.5 72.6898H89.1667V78.4539C89.1667 78.8518 89.5398 79.1744 90 79.1744C90.4603 79.1744 90.8334 78.8518 90.8334 78.4539V72.6898H97.5C97.9603 72.6898 98.3334 72.3672 98.3334 71.9693C98.3334 71.5713 97.9603 71.2488 97.5 71.2488H90.8334V65.4847Z"
             fill="#0C1F43"
           />
           <defs>
             <clipPath id="clip0_105_222">
-              <rect width="40" height="34.5846" fill="white" transform="translate(30 26)" />
+              <rect
+                width="40"
+                height="34.5846"
+                fill="white"
+                transform="translate(30 26)"
+              />
             </clipPath>
           </defs>
         </svg>
-        <input type="file" accept="image/*" onChange={handleUpload} className="bg-myblue w-2/6 h-10 rounded-full" />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleUpload}
+          className="h-10 w-2/6 rounded-full bg-myblue"
+        />
         {showImages.map((src, idx) => {
           return (
             <div>
@@ -74,7 +105,10 @@ function PhotoUpload() {
             </div>
           );
         })}
-        <button type="button" className="border-2 border-mybgcolor-50 w-2/6 h-10 rounded-full">
+        <button
+          type="button"
+          className="border-mybgcolor-50 h-10 w-2/6 rounded-full border-2"
+        >
           약 직접 추가
         </button>
       </div>
