@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { ReactComponent as Down } from "../../../assets/registerMedi/down.svg";
 import AutoMediInput from "../../../components/Common/AutoMediInput";
 
-function RegisterMedi() {
-  // 시간대 선택시 타입 반환
+type Props = {};
+
+const RegisterEachMediForm = (props: Props) => {
+  // 아침,점심,저녁 선택시 타입 반환
   interface SelectedTimes {
     [key: string]: boolean;
   }
@@ -28,20 +30,28 @@ function RegisterMedi() {
 
   return (
     <section className="my-16">
-      <div className="flex">
-        <p className="mb-8 text-xl">인식된 약</p>
-
-        <button className="ml-3 h-7 w-24" type="button">
-          약 추가하기
-        </button>
+      <div className="flex"></div>
+      <div className="flex items-center justify-between">
+        <p>약 이름</p>
+        <AutoMediInput />
       </div>
       <div className="flex items-center justify-between">
-        <AutoMediInput />
-        {/* <input className="h-8 w-72" type="text" placeholder="약 이름" /> */}
-        <button className="h-7 w-14" type="button">
-          삭제
-        </button>
+        <p>복용 시작</p>
+        <input
+          className="ml-20 mt-4 h-8 w-72"
+          type="text"
+          placeholder="2000.00.00"
+        />
       </div>
+      <div className="flex items-center justify-between">
+        <p>복용 종료</p>
+        <input
+          className="ml-20 mt-4 h-8 w-72"
+          type="text"
+          placeholder="2000.00.00"
+        />
+      </div>
+
       <div className="mt-6 flex items-center justify-between">
         <p>복용 방법</p>
         <div>
@@ -77,6 +87,6 @@ function RegisterMedi() {
       </div>
     </section>
   );
-}
+};
 
-export default RegisterMedi;
+export default RegisterEachMediForm;

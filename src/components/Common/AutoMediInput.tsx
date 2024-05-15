@@ -71,7 +71,7 @@ const AutoCompleteSearch: React.FC = () => {
       <input
         className="h-8 w-72"
         type="text"
-        placeholder="약 이름"
+        placeholder="조회할 약품의 이름을 입력하세요."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
       />

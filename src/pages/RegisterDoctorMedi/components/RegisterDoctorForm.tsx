@@ -1,6 +1,6 @@
 import React from "react";
 
-function RegisterDoctor() {
+function RegisterDoctorForm() {
   return (
     <section>
       <div className="flex items-center justify-between">
@@ -55,4 +55,4 @@ function RegisterDoctor() {
   );
 }
 
-export default RegisterDoctor;
+export default RegisterDoctorForm;
