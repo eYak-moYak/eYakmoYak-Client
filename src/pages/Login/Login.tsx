@@ -1,5 +1,5 @@
-import React from "react";
-import { ReactComponent as KaKaoLogin } from "../../assets/login/kakaoLogin.svg";
+import KaKaoLoginForm from "./components/KaKaoLoginForm";
+
 const Login = () => {
   return (
     <div className="flex h-5/6 items-end justify-center">
@@ -12,12 +12,8 @@ const Login = () => {
           <br /> 복약정보부터 병용금기 약물 조회까지 <br></br>쉽게 이용하세요!{" "}
           <br></br>지금, 나만의 약사를 만나보세요!
         </p>
-        <div className="border-mybgcolor-50 flex h-40 w-40 items-center justify-center rounded-full border-4 bg-mywhite">
-          <KaKaoLogin />
-        </div>
-        <button type="button">
-          <img src="/assets/kakaoLogin.svg" alt="kakao login"></img>
-        </button>
+        <div className="border-mybgcolor-50 flex h-40 w-40 items-center justify-center rounded-full border-4 bg-mywhite"></div>
+        <KaKaoLoginForm />
       </div>
     </div>
   );
