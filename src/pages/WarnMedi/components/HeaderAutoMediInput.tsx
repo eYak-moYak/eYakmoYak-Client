@@ -16,7 +16,7 @@ const HeaderAutoMediInput: React.FC = () => {
       if (keyword) {
         fetchDrugs(process.env.REACT_APP_API_KEY, keyword, 1, 1, 10);
       }
-    }, 300); // 300ms 디바운스
+    }, 300);
 
     return () => {
       clearTimeout(debounce);
@@ -68,22 +68,19 @@ const HeaderAutoMediInput: React.FC = () => {
   return (
     <div>
       <input
-        className="fixed left-52 top-3 h-10 w-8/12"
+        className="absolute left-52 top-3 h-10 w-8/12"
         type="text"
         placeholder="조회할 약품의 이름을 입력하세요."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
       />
       {drugs.length > 0 && (
-        <ul className="border-myblue-500 fixed left-56 top-12 w-fit border-2 bg-mywhite p-3">
+        <ul className="border-myblue-500 absolute left-56 top-12 w-1/3 border-2 bg-mywhite p-3">
           {drugs.map((drug, index) => (
             <li key={index}>{drug.itemName}</li>
           ))}
         </ul>
       )}
-      <button className="fixed right-52 top-4 h-7 w-16" type="button">
-        검색
-      </button>
     </div>
   );
 };
