@@ -6,6 +6,7 @@ import RegisterDoctorMedi from "../pages/RegisterDoctorMedi/RegisterDoctorMedi";
 import MediInfo from "../pages/MediInfo/MediInfo";
 import WarnMedi from "../pages/WarnMedi/WarnMedi";
 import KaKaoRedirectHandler from "../pages/Login/components/KaKaoRedirectHandler";
+import RegisterEachMedi from "../pages/RegisterEachMedi/RegisterEachMedi";
 
 const AppRouter = () => {
   return (
@@ -14,7 +15,8 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/upload" element={<PhotoUpload />} />
-        <Route path="/register" element={<RegisterDoctorMedi />} />
+        <Route path="/register-doctormedi" element={<RegisterDoctorMedi />} />
+        <Route path="/register-eachmedi" element={<RegisterEachMedi />} />
         <Route path="/mediinfo" element={<MediInfo />} />
         <Route path="/warnmedi" element={<WarnMedi />} />
         <Route path="/redirect" element={<KaKaoRedirectHandler />} />

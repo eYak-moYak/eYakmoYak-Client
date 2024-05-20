@@ -94,7 +94,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
           </li>
           <li>
             <Link
-              to="/register"
+              to="/register-eachmedi"
               className="flex items-center justify-center gap-2"
             >
               <svg
