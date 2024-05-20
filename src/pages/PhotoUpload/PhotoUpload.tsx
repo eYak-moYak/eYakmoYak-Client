@@ -1,9 +1,11 @@
 import { useState, ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 function PhotoUpload() {
   const [files, setFiles] = useState<File | null>(null);
   const [showImages, setShowImages] = useState<string[]>([]);
 
+  const navigate = useNavigate();
   const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       setFiles(event.target.files[0]);
@@ -108,6 +110,7 @@ function PhotoUpload() {
         <button
           type="button"
           className="border-mybgcolor-50 h-10 w-2/6 rounded-full border-2"
+          onClick={() => navigate("/register-eachmedi")}
         >
           약 직접 추가
         </button>

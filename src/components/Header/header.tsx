@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {
   title: string; // 타이틀을 위한 props
@@ -48,14 +49,14 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
               fill="#000000"
             />
           </svg>
-          <a href="/">로그인해주세요</a>
+          <Link to="/">로그인해주세요</Link>
         </div>
       </div>
       <nav className="flex h-16 items-center justify-center bg-myblue">
         <ul className="mt-2 flex gap-14 rounded-t-xl bg-mywhite p-3 px-40">
           <li>
-            <a
-              href="/upLoad"
+            <Link
+              to="/upLoad"
               className="flex items-center justify-center gap-2"
             >
               <svg
@@ -89,11 +90,11 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
                 />
               </svg>
               사진업로드
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/services"
+            <Link
+              to="/register-eachmedi"
               className="flex items-center justify-center gap-2"
             >
               <svg
@@ -117,12 +118,12 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
                 </defs>
               </svg>
               약정보 등록
-            </a>
+            </Link>
           </li>
 
           <li>
-            <a
-              href="/services"
+            <Link
+              to="/mediinfo"
               className="flex items-center justify-center gap-2"
             >
               <svg
@@ -140,11 +141,11 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
                 />
               </svg>
               복약정보
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/contact"
+            <Link
+              to="/warnmedi"
               className="flex items-center justify-center gap-2"
             >
               <svg
@@ -167,7 +168,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
                 </defs>
               </svg>
               병용금기약품
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
