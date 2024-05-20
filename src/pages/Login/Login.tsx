@@ -1,9 +1,10 @@
+import BodyLayout from "../../components/Common/BodyLayout";
 import KaKaoLoginForm from "./components/KaKaoLoginForm";
 
 const Login = () => {
   return (
     <div className="flex h-5/6 items-end justify-center">
-      <div className="flex h-5/6 w-10/12 flex-col items-center justify-end gap-4 rounded-t-xl bg-mywhite pb-14">
+      <BodyLayout>
         <div>
           <h1 className="z-10 text-7xl">이약머약</h1>
         </div>
@@ -14,7 +15,7 @@ const Login = () => {
         </p>
         <div className="border-mybgcolor-50 flex h-40 w-40 items-center justify-center rounded-full border-4 bg-mywhite"></div>
         <KaKaoLoginForm />
-      </div>
+      </BodyLayout>
     </div>
   );
 };

@@ -1,12 +1,12 @@
-import React from "react";
 import RegisterMediForm from "./components/RegisterEachMediForm";
+import BodyLayout from "../../components/Common/BodyLayout";
 
 type Props = {};
 
 const RegisterEachMedi = (props: Props) => {
   return (
     <div className="flex h-5/6 items-end justify-center">
-      <div className="flex h-5/6 w-10/12 flex-col items-center justify-end gap-4 rounded-t-xl bg-mywhite pb-14">
+      <BodyLayout>
         <h1 className="z-10 mb-4 mt-16 text-5xl">개별약 등록하기</h1>
         <main className="flex flex-col">
           <RegisterMediForm />
@@ -14,7 +14,7 @@ const RegisterEachMedi = (props: Props) => {
             등록하기
           </button>
         </main>
-      </div>
+      </BodyLayout>
     </div>
   );
 };
