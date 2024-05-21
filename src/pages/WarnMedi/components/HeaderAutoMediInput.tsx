@@ -9,18 +9,30 @@ interface Drug {
 
 const HeaderAutoMediInput: React.FC = () => {
   const [keyword, setKeyword] = useState<string>("");
-  const [drugs, setDrugs] = useState<Drug[]>([]);
+  const [searchDrugs, setSearchDrugs] = useState<Drug[]>([]);
+  const [openSearch, setOpenSearch] = useState(false);
+
+  const handleOnClick = (drug: Drug) => {
+    setKeyword(drug.itemName);
+    setOpenSearch(false);
+  };
 
   useEffect(() => {
-    const debounce = setTimeout(() => {
-      if (keyword) {
-        fetchDrugs(process.env.REACT_APP_API_KEY, keyword, 1, 1, 10);
-      }
-    }, 300);
+    if (keyword) {
+      const exactMatch = searchDrugs.some((drug) => drug.itemName === keyword);
+      exactMatch ? setOpenSearch(false) : setOpenSearch(true);
 
-    return () => {
-      clearTimeout(debounce);
-    };
+      const debounce = setTimeout(() => {
+        fetchDrugs(process.env.REACT_APP_API_KEY, keyword, 1, 1, 10);
+      }, 100); // 100ms 디바운스
+
+      return () => {
+        clearTimeout(debounce);
+      };
+    } else {
+      setOpenSearch(false);
+      setSearchDrugs([]);
+    }
   }, [keyword]);
 
   async function fetchDrugs(
@@ -31,7 +43,7 @@ const HeaderAutoMediInput: React.FC = () => {
     numOfRows: number,
   ) {
     try {
-      const url = `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList`;
+      const url = `${process.env.REACT_APP_MEDI_NAME_URL}`;
       const response = await axios.get(url, {
         params: {
           serviceKey: decodeURIComponent(serviceKey),
@@ -54,14 +66,14 @@ const HeaderAutoMediInput: React.FC = () => {
             `Item Name: ${item.itemName}, Enterprise Name: ${item.entpName}`,
           );
         });
-        setDrugs(response.data.body.items);
+        setSearchDrugs(response.data.body.items);
       } else {
         console.log("No items found or 'items' is not an array");
-        setDrugs([]); // 데이터가 없으면 빈 배열 설정
+        setSearchDrugs([]);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setDrugs([]);
+      setSearchDrugs([]);
     }
   }
 
@@ -74,10 +86,12 @@ const HeaderAutoMediInput: React.FC = () => {
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
       />
-      {drugs.length > 0 && (
+      {openSearch && searchDrugs.length > 0 && (
         <ul className="border-myblue-500 absolute left-56 top-12 w-1/3 border-2 bg-mywhite p-3">
-          {drugs.map((drug, index) => (
-            <li key={index}>{drug.itemName}</li>
+          {searchDrugs.map((drug, index) => (
+            <li key={index} onClick={() => handleOnClick(drug)}>
+              {drug.itemName}
+            </li>
           ))}
         </ul>
       )}
