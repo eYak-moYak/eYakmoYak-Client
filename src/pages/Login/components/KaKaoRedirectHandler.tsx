@@ -1,47 +1,61 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import instanceWithToken from "../../../apis/axiosInstance";
 
 type Props = {};
 
+/** 카카오톡 리다이렉트시 호출되는 함수 */
 const KaKaoRedirectHandler = (props: Props) => {
   const navigate = useNavigate();
-  const [message, setMessage] = useState("페이지 이동하는 중...");
+  const [message, setMessage] = useState("Redirecting…");
 
   useEffect(() => {
-    console.log("Fetching tokens...");
-
     const urlParams = new URLSearchParams(window.location.search);
     const accessToken = urlParams.get("access");
-    console.log("Access Token:", accessToken);
 
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/check-refresh-token`, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        const refreshToken = response.data;
-        console.log("Refresh Token:", refreshToken);
+    if (accessToken) {
+      localStorage.setItem("access", accessToken);
 
-        if (accessToken && refreshToken !== "No refresh token found") {
-          // 토큰을 로컬 스토리지에 저장
-          localStorage.setItem("access", accessToken);
-          localStorage.setItem("refresh", refreshToken);
-
-          setMessage("로그인 중....");
-          setTimeout(() => {
-            navigate("/upload");
-          }, 1000);
-        } else {
-          console.error("Missing tokens. Redirecting to login.");
-          navigate("/");
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching cookies:", error);
-        navigate("/");
-      });
+      fetchPremedList(accessToken);
+    } else {
+      navigate("/login");
+    }
   }, [navigate]);
+
+  const fetchPremedList = async (accessToken: string) => {
+    try {
+      const response = await instanceWithToken.get("/get/premedList", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      console.log(response);
+
+      if (response.status === 200 && response.data) {
+        setMessage("Success");
+
+        setTimeout(() => {
+          navigate("/upload");
+        }, 1000);
+      } else {
+        setMessage("Failed");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Error fetching premed list:", error);
+      setMessage("Failed");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    }
+  };
+
   return <div>{message}</div>;
 };
 
