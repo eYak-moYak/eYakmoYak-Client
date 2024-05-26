@@ -2,28 +2,33 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 interface Drug {
-  // 약 이름과 약 회사명을 사용
   itemName: string;
   entpName: string;
 }
 
-const AutoCompleteSearch: React.FC = () => {
-  const [keyword, setKeyword] = useState<string>("");
+interface AutoMediInputProps {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const AutoMediInput: React.FC<AutoMediInputProps> = ({ value, onChange }) => {
   const [searchDrugs, setSearchDrugs] = useState<Drug[]>([]);
   const [openSearch, setOpenSearch] = useState(false);
 
   const handleOnClick = (drug: Drug) => {
-    setKeyword(drug.itemName);
+    onChange({
+      target: { value: drug.itemName },
+    } as React.ChangeEvent<HTMLInputElement>);
     setOpenSearch(false);
   };
 
   useEffect(() => {
-    if (keyword) {
-      const exactMatch = searchDrugs.some((drug) => drug.itemName === keyword);
+    if (value) {
+      const exactMatch = searchDrugs.some((drug) => drug.itemName === value);
       exactMatch ? setOpenSearch(false) : setOpenSearch(true);
 
       const debounce = setTimeout(() => {
-        fetchDrugs(process.env.REACT_APP_API_KEY, keyword, 1, 1, 10);
+        fetchDrugs(process.env.REACT_APP_API_KEY, value, 1, 1, 10);
       }, 100); // 100ms 디바운스
 
       return () => {
@@ -33,7 +38,7 @@ const AutoCompleteSearch: React.FC = () => {
       setOpenSearch(false);
       setSearchDrugs([]);
     }
-  }, [keyword]);
+  }, [value]);
 
   async function fetchDrugs(
     serviceKey: any,
@@ -54,18 +59,12 @@ const AutoCompleteSearch: React.FC = () => {
           type: "json",
         },
       });
-      console.log(response.data);
 
       if (
         response.data &&
         response.data.body &&
         Array.isArray(response.data.body.items)
       ) {
-        response.data.body.items.forEach((item: Drug) => {
-          console.log(
-            `Item Name: ${item.itemName}, Enterprise Name: ${item.entpName}`,
-          );
-        });
         setSearchDrugs(response.data.body.items);
       } else {
         console.log("No items found or 'items' is not an array");
@@ -83,8 +82,8 @@ const AutoCompleteSearch: React.FC = () => {
         className="h-8 w-72"
         type="text"
         placeholder="조회할 약품의 이름을 입력하세요."
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
+        value={value}
+        onChange={onChange}
       />
       {openSearch && searchDrugs.length > 0 && (
         <ul className="border-myblue-500 absolute flex w-2/6 flex-col gap-1 border-2 bg-mywhite">
@@ -99,4 +98,4 @@ const AutoCompleteSearch: React.FC = () => {
   );
 };
 
-export default AutoCompleteSearch;
+export default AutoMediInput;

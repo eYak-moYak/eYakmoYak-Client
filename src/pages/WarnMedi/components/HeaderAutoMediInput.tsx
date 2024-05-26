@@ -54,18 +54,12 @@ const HeaderAutoMediInput: React.FC = () => {
           type: "json",
         },
       });
-      console.log(response.data);
 
       if (
         response.data &&
         response.data.body &&
         Array.isArray(response.data.body.items)
       ) {
-        response.data.body.items.forEach((item: Drug) => {
-          console.log(
-            `Item Name: ${item.itemName}, Enterprise Name: ${item.entpName}`,
-          );
-        });
         setSearchDrugs(response.data.body.items);
       } else {
         console.log("No items found or 'items' is not an array");
