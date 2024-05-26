@@ -17,7 +17,6 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({ setWarningData }) => {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [selectedMedicines, setSelectedMedicines] = useState<string[]>([]);
 
-
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
@@ -27,8 +26,13 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({ setWarningData }) => {
             withCredentials: true,
           },
         );
-        setMedicines(response.data);
-        console.log("API Response:", response.data);
+
+        if (Array.isArray(response.data)) {
+          setMedicines(response.data);
+          console.log("API Response:", response.data);
+        } else {
+          console.error("Unexpected response data format:", response.data);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -78,32 +82,36 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({ setWarningData }) => {
           className="m-5 rounded bg-blue-500 p-2 text-white"
         >
           조회하기
-        </button>{" "}
+        </button>
       </div>
       <div className="flex rounded-lg bg-white">
         <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8">
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {medicines.map((medicine, index) => (
-              <div className="card p-4" key={index}>
-                <div className="w-full overflow-hidden rounded-lg">
-                  <img src={medicine.imgUrl} alt={medicine.name} />
-                </div>
-                <div className="mt-4 flex justify-between px-4 text-sm">
-                  <div>
-                    <h3 className="text-gray-700">{medicine.name}</h3>
-                    <p>복용 시작: {medicine.start_date}</p>
-                    <p>복용 종료: {medicine.end_date}</p>
+            {Array.isArray(medicines) && medicines.length > 0 ? (
+              medicines.map((medicine, index) => (
+                <div className="card p-4" key={index}>
+                  <div className="w-full overflow-hidden rounded-lg">
+                    <img src={medicine.imgUrl} alt={medicine.name} />
                   </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      checked={selectedMedicines.includes(medicine.name)}
-                      onChange={() => handleCheckboxChange(medicine.name)}
-                    />
+                  <div className="mt-4 flex justify-between px-4 text-sm">
+                    <div>
+                      <h3 className="text-gray-700">{medicine.name}</h3>
+                      <p>복용 시작: {medicine.start_date}</p>
+                      <p>복용 종료: {medicine.end_date}</p>
+                    </div>
+                    <div>
+                      <input
+                        type="checkbox"
+                        checked={selectedMedicines.includes(medicine.name)}
+                        onChange={() => handleCheckboxChange(medicine.name)}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-gray-500">복용 중인 약이 없습니다.</p>
+            )}
           </div>
         </div>
       </div>
