@@ -10,6 +10,7 @@ function RegisterDoctorMediForm() {
 
   const [isTimeOpen, setIsTimeOpen] = useState<boolean>(false);
   const [selectedTimes, setSelectedTimes] = useState<SelectedTimes>({});
+  const [medicationName, setMedicationName] = useState<string>("");
 
   //   복용시간 토글
   const onTimeToggle = () => setIsTimeOpen(!isTimeOpen);
@@ -36,7 +37,10 @@ function RegisterDoctorMediForm() {
         </button>
       </div>
       <div className="flex items-center justify-between">
-        <AutoMediInput />
+        <AutoMediInput
+          value={medicationName}
+          onChange={(e) => setMedicationName(e.target.value)}
+        />
         <button className="h-7 w-14" type="button">
           삭제
         </button>
@@ -48,7 +52,9 @@ function RegisterDoctorMediForm() {
             <button
               key={index}
               onClick={() => handleTimeSelection(time)}
-              className={`border-myblue-500 mx-1 h-7 w-14 border-2 ${selectedTimes[time] ? "bg-myblue" : "bg-mywhite"}`}
+              className={`border-myblue-500 mx-1 h-7 w-14 border-2 ${
+                selectedTimes[time] ? "bg-myblue" : "bg-mywhite"
+              }`}
             >
               {time}
             </button>
@@ -62,7 +68,7 @@ function RegisterDoctorMediForm() {
             복용시간
             <Down className="h-5 w-4" />
           </div>
-          <ul className=" absolute z-10 flex w-full flex-col items-center justify-center gap-2  bg-mywhite">
+          <ul className="absolute z-10 flex w-full flex-col items-center justify-center gap-2 bg-mywhite">
             {isTimeOpen && (
               <>
                 <li onClick={onTimeClicked("식후 30분", 1)}>식후 30분</li>

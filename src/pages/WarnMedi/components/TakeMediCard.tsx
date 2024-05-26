@@ -17,6 +17,7 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({ setWarningData }) => {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [selectedMedicines, setSelectedMedicines] = useState<string[]>([]);
 
+
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
