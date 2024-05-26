@@ -1,114 +1,161 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import instanceWithToken from "../../../apis/axiosInstance";
 import { ReactComponent as Down } from "../../../assets/registerMedi/down.svg";
 import AutoMediInput from "../../../components/Common/AutoMediInput";
 
 type Props = {};
 
-const RegisterEachMediForm: React.FC<Props> = (props: Props) => {
-  interface SelectedTimes {
-    [key: string]: boolean;
-  }
+const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
+  (props, ref) => {
+    const [isTimeOpen, setIsTimeOpen] = useState<boolean>(false);
+    const [doseTime, setDoseTime] = useState<string>("");
+    const [mealTime, setMealTime] = useState<number | null>(null);
+    const [medicationName, setMedicationName] = useState<string>("");
+    const [startDate, setStartDate] = useState<string>("");
+    const [endDate, setEndDate] = useState<string>("");
 
-  const [isTimeOpen, setIsTimeOpen] = useState<boolean>(false);
-  const [selectedTimes, setSelectedTimes] = useState<SelectedTimes>({});
-  const [doseTime, setDoseTime] = useState<string>("");
-  const [apiData, setApiData] = useState<any>(null);
+    const timeMapping: { [key: string]: string } = {
+      아침: "M",
+      점심: "L",
+      저녁: "D",
+      "취침 전": "N",
+    };
 
-  const onTimeToggle = () => setIsTimeOpen(!isTimeOpen);
+    const mealTimeMapping: { [key: string]: number } = {
+      "식후 30분": 0,
+      "식후 즉시": 1,
+      "식전 30분": 2,
+      "식전 즉시": 3,
+    };
 
-  const onTimeClicked = (value: string) => {
-    console.log(value);
-    setDoseTime(value);
-    setIsTimeOpen(false);
-  };
+    const onTimeToggle = () => setIsTimeOpen(!isTimeOpen);
 
-  const handleTimeSelection = (time: string) => {
-    setSelectedTimes((prev) => ({
-      ...prev,
-      [time]: !prev[time],
-    }));
-  };
+    const onTimeClicked = (value: string) => {
+      console.log(value);
+      setMealTime(mealTimeMapping[value]);
+      setIsTimeOpen(false);
+    };
 
-  useEffect(() => {
-    const fetchData = async () => {
+    const handleTimeSelection = (time: string) => {
+      const mappedTime = timeMapping[time];
+      setDoseTime((prev) => (prev === mappedTime ? "" : mappedTime));
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+
+      const data = {
+        name: medicationName,
+        start_date: startDate,
+        end_date: endDate,
+        dose_time: doseTime,
+        meal_time: mealTime,
+      };
+      console.log("Sending data to server:", data);
+
       try {
-        const response = await instanceWithToken.get("/get/premedList", {
+        const response = await instanceWithToken.post("/add/medicine", data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
           withCredentials: true,
         });
 
-        setApiData(response.data);
-        console.log("API Response:", response.data);
+        if (response.status === 200) {
+          console.log("Data submitted successfully");
+          setMedicationName("");
+          setStartDate("");
+          setEndDate("");
+          setDoseTime("");
+          setMealTime(null);
+        } else {
+          console.error("Error submitting data, status code:", response.status);
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error submitting data:", error);
       }
     };
 
-    fetchData();
-  }, []); // 빈 배열을 두 번째 인자로 넘겨서 컴포넌트가 마운트될 때 한 번만 실행되도록 함
-
-  return (
-    <section className="my-16">
-      <div className="flex"></div>
-      <div className="flex items-center justify-between">
-        <p>약 이름</p>
-        <AutoMediInput />
-      </div>
-      <div className="flex items-center justify-between">
-        <p>복용 시작</p>
-        <input
-          className="ml-20 mt-4 h-8 w-72"
-          type="text"
-          placeholder="2000.00.00"
-        />
-      </div>
-      <div className="flex items-center justify-between">
-        <p>복용 종료</p>
-        <input
-          className="ml-20 mt-4 h-8 w-72"
-          type="text"
-          placeholder="2000.00.00"
-        />
-      </div>
-
-      <div className="mt-6 flex items-center justify-between">
-        <p>복용 방법</p>
-        <div>
-          {["아침", "점심", "저녁", "취침 전"].map((time, index) => (
-            <button
-              key={index}
-              onClick={() => handleTimeSelection(time)}
-              className={`border-myblue-500 mx-1 h-7 w-14 border-2 ${
-                selectedTimes[time] ? "bg-myblue" : "bg-mywhite"
-              }`}
-            >
-              {time}
-            </button>
-          ))}
-        </div>
-        <div className="relative">
-          <div
-            className="flex w-28 items-center justify-center rounded-xl"
-            onClick={onTimeToggle}
-          >
-            복용시간
-            <Down className="h-5 w-4" />
+    return (
+      <section className="my-16">
+        <form onSubmit={handleSubmit} ref={ref}>
+          <div className="flex items-center justify-between">
+            <p>약 이름</p>
+            <AutoMediInput
+              value={medicationName}
+              onChange={(e) => setMedicationName(e.target.value)}
+            />
           </div>
-          <ul className="absolute z-10 flex w-full flex-col items-center justify-center gap-2 bg-mywhite">
-            {isTimeOpen && (
-              <>
-                <li onClick={() => onTimeClicked("식후 30분")}>식후 30분</li>
-                <li onClick={() => onTimeClicked("식후 즉시")}>식후 즉시</li>
-                <li onClick={() => onTimeClicked("식전 30분")}>식전 30분</li>
-                <li onClick={() => onTimeClicked("식전 즉시")}>식전 즉시</li>
-              </>
-            )}
-          </ul>
-        </div>
-        <p>선택 복용 시간: {doseTime}</p>
-      </div>
-    </section>
-  );
-};
+          <div className="flex items-center justify-between">
+            <p>복용 시작</p>
+            <input
+              className="ml-20 mt-4 h-8 w-72"
+              type="text"
+              placeholder="2000.00.00"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <p>복용 종료</p>
+            <input
+              className="ml-20 mt-4 h-8 w-72"
+              type="text"
+              placeholder="2000.00.00"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </div>
+
+          <div className="mt-6 flex items-center justify-between">
+            <p>복용 방법</p>
+            <div>
+              {["아침", "점심", "저녁", "취침 전"].map((time, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => handleTimeSelection(time)}
+                  className={`border-myblue-500 mx-1 h-7 w-14 border-2 ${
+                    doseTime === timeMapping[time] ? "bg-myblue" : "bg-mywhite"
+                  }`}
+                >
+                  {time}
+                </button>
+              ))}
+            </div>
+            <div className="relative">
+              <div
+                className="flex w-28 items-center justify-center rounded-xl"
+                onClick={onTimeToggle}
+              >
+                복용시간
+                <Down className="h-5 w-4" />
+              </div>
+              <ul className="absolute z-10 flex w-full flex-col items-center justify-center gap-2 bg-mywhite">
+                {isTimeOpen && (
+                  <>
+                    <li onClick={() => onTimeClicked("식후 30분")}>
+                      식후 30분
+                    </li>
+                    <li onClick={() => onTimeClicked("식후 즉시")}>
+                      식후 즉시
+                    </li>
+                    <li onClick={() => onTimeClicked("식전 30분")}>
+                      식전 30분
+                    </li>
+                    <li onClick={() => onTimeClicked("식전 즉시")}>
+                      식전 즉시
+                    </li>
+                  </>
+                )}
+              </ul>
+            </div>
+            <p>선택 복용 시간: {doseTime}</p>
+          </div>
+        </form>
+      </section>
+    );
+  },
+);
 
 export default RegisterEachMediForm;
