@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import instanceWithToken from "../../../apis/axiosInstance";
+import { Drug } from "./HeaderAutoMediInput";
 
 interface Medicine {
   name: string;
@@ -11,9 +12,13 @@ interface Medicine {
 
 interface TakeMediCardProps {
   setWarningData: (data: any[]) => void;
+  selectedDrug: Drug | null;
 }
 
-const TakeMediCard: React.FC<TakeMediCardProps> = ({ setWarningData }) => {
+const TakeMediCard: React.FC<TakeMediCardProps> = ({
+  setWarningData,
+  selectedDrug,
+}) => {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [selectedMedicines, setSelectedMedicines] = useState<string[]>([]);
 
@@ -52,13 +57,18 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({ setWarningData }) => {
   };
 
   const handleButtonClick = async () => {
+    if (!selectedDrug) {
+      console.error("No drug selected");
+      return;
+    }
+
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/get/cont/medicines`,
         {
           params: {
             medicines: selectedMedicines,
-            name: "이트라녹스정(이트라코나졸고체분산체)",
+            name: selectedDrug.itemName,
           },
           paramsSerializer: (params) => {
             return new URLSearchParams(params).toString();

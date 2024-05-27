@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-interface Drug {
-  // 약 이름과 약 회사명을 사용
+export interface Drug {
   itemName: string;
   entpName: string;
 }
 
-const HeaderAutoMediInput: React.FC = () => {
+interface HeaderAutoMediInputProps {
+  setSelectedDrug: (drug: Drug) => void;
+}
+
+const HeaderAutoMediInput: React.FC<HeaderAutoMediInputProps> = ({
+  setSelectedDrug,
+}) => {
   const [keyword, setKeyword] = useState<string>("");
   const [searchDrugs, setSearchDrugs] = useState<Drug[]>([]);
   const [openSearch, setOpenSearch] = useState(false);
 
   const handleOnClick = (drug: Drug) => {
     setKeyword(drug.itemName);
+    setSelectedDrug(drug);
     setOpenSearch(false);
   };
 
