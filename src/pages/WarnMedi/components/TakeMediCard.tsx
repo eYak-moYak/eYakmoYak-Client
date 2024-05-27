@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import instanceWithToken from "../../../apis/axiosInstance";
 import { Drug } from "./HeaderAutoMediInput";
@@ -21,6 +21,7 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
 }) => {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [selectedMedicines, setSelectedMedicines] = useState<string[]>([]);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchMedicines = async () => {
@@ -78,8 +79,15 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
 
       console.log("API Response:", response.data);
       setWarningData(response.data);
+      scrollToBottom();
     } catch (error) {
       console.error("Error fetching data:", error);
+    }
+  };
+
+  const scrollToBottom = () => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -125,6 +133,7 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
           </div>
         </div>
       </div>
+      <div ref={bottomRef}></div>
     </section>
   );
 };
