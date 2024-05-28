@@ -1,11 +1,32 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   title: string; // 타이틀을 위한 props
 }
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("refresh");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  const handleAuthClick = () => {
+    if (isLoggedIn) {
+      setIsLoggedIn(false);
+      navigate("/");
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <div className="mb-20 w-full bg-myblue">
       <div className="flex justify-between p-3">
@@ -49,7 +70,9 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
               fill="#000000"
             />
           </svg>
-          <Link to="/">로그인해주세요</Link>
+          <Link to="/" onClick={handleAuthClick}>
+            {isLoggedIn ? "로그아웃" : "로그인 해주세요"}
+          </Link>
         </div>
       </div>
       <nav className="flex h-16 items-center justify-center bg-myblue">
