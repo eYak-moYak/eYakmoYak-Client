@@ -70,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
               fill="#000000"
             />
           </svg>
-          <Link to="#" onClick={handleAuthClick}>
+          <Link to="/" onClick={handleAuthClick}>
             {isLoggedIn ? "로그아웃" : "로그인 해주세요"}
           </Link>
         </div>
