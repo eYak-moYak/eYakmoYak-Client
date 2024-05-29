@@ -1,5 +1,6 @@
 import { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import BodyLayout from "../../components/Common/BodyLayout";
 
 function PhotoUpload() {
   const [files, setFiles] = useState<File | null>(null);
@@ -38,9 +39,9 @@ function PhotoUpload() {
 
   return (
     <div className="flex h-5/6 items-end justify-center">
-      <div className="flex h-5/6 w-10/12 flex-col items-center justify-end gap-4 rounded-t-xl bg-mywhite pb-14">
+      <BodyLayout>
         <div>
-          <h1 className="z-10 mb-4 text-5xl">약봉투 사진을 등록하세요</h1>
+          <h1 className="z-10 mb-4 pt-10 text-5xl">약봉투 사진을 등록하세요</h1>
         </div>
         <p className="flex text-center text-neutral-400">
           잠깐! 사진 가이드를 지켜주세요!
@@ -114,7 +115,7 @@ function PhotoUpload() {
         >
           약 직접 추가
         </button>
-      </div>
+      </BodyLayout>
     </div>
   );
 }
