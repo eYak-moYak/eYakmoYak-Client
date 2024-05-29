@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { useState, forwardRef } from "react";
 import instanceWithToken from "../../../apis/axiosInstance";
 import { ReactComponent as Down } from "../../../assets/registerMedi/down.svg";
 import AutoMediInput from "../../../components/Common/AutoMediInput";
@@ -13,6 +13,7 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
     const [medicationName, setMedicationName] = useState<string>("");
     const [startDate, setStartDate] = useState<string>("");
     const [endDate, setEndDate] = useState<string>("");
+    const [imgUrl, setImgUrl] = useState<string>("");
 
     const timeMapping: { [key: string]: string } = {
       아침: "M",
@@ -50,6 +51,7 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
         end_date: endDate,
         dose_time: doseTime,
         meal_time: mealTime,
+        imgUrl,
       };
       console.log("Sending data to server:", data);
 
@@ -68,6 +70,7 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
           setEndDate("");
           setDoseTime("");
           setMealTime(null);
+          setImgUrl("");
         } else {
           console.error("Error submitting data, status code:", response.status);
         }
@@ -84,6 +87,7 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
             <AutoMediInput
               value={medicationName}
               onChange={(e) => setMedicationName(e.target.value)}
+              onImageChange={(url) => setImgUrl(url)}
             />
           </div>
           <div className="flex items-center justify-between">
