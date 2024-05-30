@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import registerMediIcon from "../../assets/registerMedi";
 
 interface Drug {
   itemName: string;
@@ -38,7 +39,7 @@ const AutoMediInput: React.FC<AutoMediInputProps> = ({
       exactMatch ? setOpenSearch(false) : setOpenSearch(true);
 
       const debounce = setTimeout(() => {
-        fetchDrugs(process.env.REACT_APP_API_KEY, value, 1, 1, 10);
+        fetchDrugs(process.env.REACT_APP_API_KEY, value, 1, 1, 7);
       }, 100); // 100ms 디바운스
 
       return () => {
@@ -111,7 +112,17 @@ const AutoMediInput: React.FC<AutoMediInputProps> = ({
                   height={60}
                 />
               ) : (
-                <div style={{ width: 60, height: 60 }}></div>
+                <div
+                  className="flex items-center justify-center"
+                  style={{ width: 60 }}
+                >
+                  <img
+                    src={registerMediIcon.defaultDrug}
+                    width={30}
+                    height={30}
+                    alt="기본 알약 사진"
+                  />
+                </div>
               )}
               {drug.itemName}
             </li>
