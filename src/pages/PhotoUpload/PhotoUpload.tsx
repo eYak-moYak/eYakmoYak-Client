@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import BodyLayout from "../../components/Common/BodyLayout";
 import pageIcons from "../../assets/pageIcon";
@@ -58,11 +58,14 @@ function PhotoUpload() {
           onClick={handleFileSelect}
           className="border-mybgcolor-50 h-10 w-2/6 rounded-full border-2"
         >
+          약봉투 사진 올리기
+        </button>
         <input
           type="file"
           accept="image/*"
           onChange={handleUpload}
-          className="h-10 w-2/6 rounded-full bg-myblue"
+          ref={fileInputRef}
+          className="hidden"
         />
         {showImages.map((src, idx) => {
           return (
@@ -74,7 +77,7 @@ function PhotoUpload() {
         })}
         <button
           type="button"
-          className="border-mybgcolor-50 h-10 w-2/6 rounded-full border-2"
+          className="border-mybgcolor-50 h-10 w-2/6 rounded-full border-2 bg-mywhite"
           onClick={() => navigate("/register-eachmedi")}
         >
           약 직접 추가
