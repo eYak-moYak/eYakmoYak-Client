@@ -1,6 +1,23 @@
-type Props = {};
+import { useEffect } from "react";
+import getPresId from "../../../apis/getPrescriptionId";
 
-const DetailMediInfoContents = (props: Props) => {
+type Props = {
+  prescriptionId: string;
+};
+
+const DetailMediInfoContents: React.FC<Props> = ({ prescriptionId }) => {
+  // 약 id에 따른 정보 가져오는 api 통신
+  const getPresIdApi = async () => {
+    if (prescriptionId) {
+      const res = await getPresId(prescriptionId);
+      console.log(res);
+    }
+  };
+
+  useEffect(() => {
+    getPresIdApi();
+  }, [prescriptionId]);
+
   return (
     <>
       <h1 className="mt-16 text-3xl">감기약</h1>
