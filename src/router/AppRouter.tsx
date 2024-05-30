@@ -19,7 +19,7 @@ const AppRouter = () => {
         <Route path="/register-doctormedi" element={<RegisterDoctorMedi />} />
         <Route path="/register-eachmedi" element={<RegisterEachMedi />} />
         <Route path="/mediinfo" element={<MediInfo />} />
-        <Route path="/detail-mediinfo" element={<DetailMediInfo />} />
+        <Route path="/detail-mediinfo/:preId" element={<DetailMediInfo />} />
         <Route path="/warnmedi" element={<WarnMedi />} />
         <Route path="/redirect" element={<KaKaoRedirectHandler />} />
       </Routes>
