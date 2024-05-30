@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { useState, forwardRef } from "react";
 import instanceWithToken from "../../../apis/axiosInstance";
 import { ReactComponent as Down } from "../../../assets/registerMedi/down.svg";
 import AutoMediInput from "../../../components/Common/AutoMediInput";
@@ -8,12 +8,15 @@ type Props = {};
 const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
   (props, ref) => {
     const [isTimeOpen, setIsTimeOpen] = useState<boolean>(false);
-    const [doseTime, setDoseTime] = useState<string>("");
+    const [doseTimes, setDoseTimes] = useState<string[]>([]);
     const [mealTime, setMealTime] = useState<number | null>(null);
+    const [selectedMealTime, setSelectedMealTime] = useState<string>(""); // 선택한 식사 후 복용 시간
     const [medicationName, setMedicationName] = useState<string>("");
     const [startDate, setStartDate] = useState<string>("");
     const [endDate, setEndDate] = useState<string>("");
+    const [imgUrl, setImgUrl] = useState<string>("");
 
+    // 복용 시간대 포맷팅
     const timeMapping: { [key: string]: string } = {
       아침: "M",
       점심: "L",
@@ -21,6 +24,7 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
       "취침 전": "N",
     };
 
+    // 식사 후 복용 포맷팅
     const mealTimeMapping: { [key: string]: number } = {
       "식후 30분": 0,
       "식후 즉시": 1,
@@ -33,12 +37,18 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
     const onTimeClicked = (value: string) => {
       console.log(value);
       setMealTime(mealTimeMapping[value]);
+      setSelectedMealTime(value); // 선택한 식사 후 복용 시간 설정
       setIsTimeOpen(false);
     };
 
+    /** 복용방법 여러개 선택하는 함수 */
     const handleTimeSelection = (time: string) => {
       const mappedTime = timeMapping[time];
-      setDoseTime((prev) => (prev === mappedTime ? "" : mappedTime));
+      setDoseTimes((prev) =>
+        prev.includes(mappedTime)
+          ? prev.filter((t) => t !== mappedTime)
+          : [...prev, mappedTime],
+      );
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -48,8 +58,9 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
         name: medicationName,
         start_date: startDate,
         end_date: endDate,
-        dose_time: doseTime,
+        dose_time: doseTimes.join(";"),
         meal_time: mealTime,
+        imgUrl,
       };
       console.log("Sending data to server:", data);
 
@@ -66,8 +77,10 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
           setMedicationName("");
           setStartDate("");
           setEndDate("");
-          setDoseTime("");
+          setDoseTimes([]);
           setMealTime(null);
+          setImgUrl("");
+          setSelectedMealTime(""); // 초기화
         } else {
           console.error("Error submitting data, status code:", response.status);
         }
@@ -84,6 +97,7 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
             <AutoMediInput
               value={medicationName}
               onChange={(e) => setMedicationName(e.target.value)}
+              onImageChange={(url) => setImgUrl(url)}
             />
           </div>
           <div className="flex items-center justify-between">
@@ -106,7 +120,6 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
               onChange={(e) => setEndDate(e.target.value)}
             />
           </div>
-
           <div className="mt-6 flex items-center justify-between">
             <p>복용 방법</p>
             <div>
@@ -116,7 +129,9 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
                   type="button"
                   onClick={() => handleTimeSelection(time)}
                   className={`border-myblue-500 mx-1 h-7 w-14 border-2 ${
-                    doseTime === timeMapping[time] ? "bg-myblue" : "bg-mywhite"
+                    doseTimes.includes(timeMapping[time])
+                      ? "bg-myblue"
+                      : "bg-mywhite"
                   }`}
                 >
                   {time}
@@ -149,8 +164,8 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
                   </>
                 )}
               </ul>
+              <p>{selectedMealTime}</p>
             </div>
-            <p>선택 복용 시간: {doseTime}</p>
           </div>
         </form>
       </section>

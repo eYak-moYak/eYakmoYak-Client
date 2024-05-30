@@ -4,21 +4,31 @@ import axios from "axios";
 interface Drug {
   itemName: string;
   entpName: string;
+  itemImage: string;
 }
 
 interface AutoMediInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onImageChange: (url: string) => void;
 }
 
-const AutoMediInput: React.FC<AutoMediInputProps> = ({ value, onChange }) => {
+const AutoMediInput: React.FC<AutoMediInputProps> = ({
+  value,
+  onChange,
+  onImageChange,
+}) => {
   const [searchDrugs, setSearchDrugs] = useState<Drug[]>([]);
   const [openSearch, setOpenSearch] = useState(false);
 
+  /** 약 클릭하면 수행되는 함수
+   * 약 이미지 설정
+   */
   const handleOnClick = (drug: Drug) => {
     onChange({
       target: { value: drug.itemName },
     } as React.ChangeEvent<HTMLInputElement>);
+    onImageChange(drug.itemImage);
     setOpenSearch(false);
   };
 
@@ -86,9 +96,23 @@ const AutoMediInput: React.FC<AutoMediInputProps> = ({ value, onChange }) => {
         onChange={onChange}
       />
       {openSearch && searchDrugs.length > 0 && (
-        <ul className="border-myblue-500 absolute flex w-2/6 flex-col gap-1 border-2 bg-mywhite">
+        <ul className="border-myblue-500 absolute z-10 flex w-3/6 flex-col gap-1 border-2 bg-mywhite">
           {searchDrugs.map((drug, index) => (
-            <li key={index} onClick={() => handleOnClick(drug)}>
+            <li
+              className="flex items-center gap-2"
+              key={index}
+              onClick={() => handleOnClick(drug)}
+            >
+              {drug.itemImage ? (
+                <img
+                  src={drug.itemImage}
+                  alt="약 이미지"
+                  width={60}
+                  height={60}
+                />
+              ) : (
+                <div style={{ width: 60, height: 60 }}></div>
+              )}
               {drug.itemName}
             </li>
           ))}

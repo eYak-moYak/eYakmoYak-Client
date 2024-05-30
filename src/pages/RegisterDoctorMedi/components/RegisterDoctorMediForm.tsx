@@ -11,6 +11,7 @@ function RegisterDoctorMediForm() {
   const [isTimeOpen, setIsTimeOpen] = useState<boolean>(false);
   const [selectedTimes, setSelectedTimes] = useState<SelectedTimes>({});
   const [medicationName, setMedicationName] = useState<string>("");
+  const [imgUrl, setImgUrl] = useState<string>(""); // 이미지 URL 상태 추가
 
   //   복용시간 토글
   const onTimeToggle = () => setIsTimeOpen(!isTimeOpen);
@@ -40,6 +41,7 @@ function RegisterDoctorMediForm() {
         <AutoMediInput
           value={medicationName}
           onChange={(e) => setMedicationName(e.target.value)}
+          onImageChange={(url) => setImgUrl(url)}
         />
         <button className="h-7 w-14" type="button">
           삭제
