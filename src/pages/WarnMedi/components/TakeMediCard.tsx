@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import instanceWithToken from "../../../apis/axiosInstance";
+import instanceWithToken from "../../../apis/axiosInstanceWithToken";
 import { Drug } from "./HeaderAutoMediInput";
 
 interface Medicine {

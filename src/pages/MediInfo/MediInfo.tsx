@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BodyLayout from "../../components/Common/BodyLayout";
 import MediCard from "./components/MediCard";
-import instanceWithToken from "../../apis/axiosInstance";
+import instanceWithToken from "../../apis/axiosInstanceWithToken";
 
 type Props = {};
 
