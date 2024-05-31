@@ -1,41 +1,48 @@
 import { useState, ChangeEvent, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import BodyLayout from "../../components/Common/BodyLayout";
 import pageIcons from "../../assets/pageIcon";
 
 function PhotoUpload() {
-  const [files, setFiles] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [showImages, setShowImages] = useState<string[]>([]);
-
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      setFiles(event.target.files[0]);
+      const selectedFile = event.target.files[0];
+      setFile(selectedFile);
+
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      try {
+        const response = await axios.post(".../upload_image", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            accept: "application/json",
+          },
+        });
+
+        const imageUrl = response.data.url;
+
+        setShowImages((prevImages) => [...prevImages, imageUrl]);
+      } catch (error) {
+        console.error("Error uploading the image:", error);
+      }
     }
-
-    const formData = new FormData();
-    if (files) {
-      formData.append("file", files);
-    }
-
-    const result: string = await fetch("http://...", {
-      method: "post",
-      body: formData,
-      headers: {
-        authorization: "Bearer ...",
-      },
-    })
-      .then((res) => res.json())
-      .then((body) => body.url);
-
-    if (result) setShowImages([...showImages, result]);
   };
 
   const handleDelete = (idx: number) => {
-    setShowImages([
-      ...showImages.slice(0, idx),
-      ...showImages.slice(idx + 1, showImages.length),
-    ]);
+    setShowImages((prevImages) =>
+      prevImages.filter((_, index) => index !== idx),
+    );
+  };
+
+  const handleFileSelect = () => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -67,14 +74,13 @@ function PhotoUpload() {
           ref={fileInputRef}
           className="hidden"
         />
-        {showImages.map((src, idx) => {
-          return (
-            <div>
-              <img src={src} alt={`${src}`} />
-              <button onClick={() => handleDelete(idx)}>X</button>
-            </div>
-          );
-        })}
+
+        {showImages.map((src, idx) => (
+          <div key={idx}>
+            <img src={src} alt={`uploaded-${idx}`} />
+            <button onClick={() => handleDelete(idx)}>X</button>
+          </div>
+        ))}
         <button
           type="button"
           className="border-mybgcolor-50 h-10 w-2/6 rounded-full border-2 bg-mywhite"
