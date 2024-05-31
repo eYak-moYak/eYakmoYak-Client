@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import instanceWithToken from "../../../apis/axiosInstance";
 import { Drug } from "./HeaderAutoMediInput";
+import registerMediIcon from "../../../assets/registerMedi";
 
 interface Medicine {
   name: string;
@@ -108,8 +109,16 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
             {Array.isArray(medicines) && medicines.length > 0 ? (
               medicines.map((medicine, index) => (
                 <div className="card p-4" key={index}>
-                  <div className="w-full overflow-hidden rounded-lg">
-                    <img src={medicine.imgUrl} alt={medicine.name} />
+                  <div className="flex w-full items-center justify-center overflow-hidden rounded-lg">
+                    {medicine.imgUrl != "No Image" ? (
+                      <img src={medicine.imgUrl} alt={medicine.name} />
+                    ) : (
+                      <img
+                        width="140rem"
+                        src={registerMediIcon.defaultDrug}
+                        alt={medicine.name}
+                      />
+                    )}
                   </div>
                   <div className="mt-4 flex justify-between px-4 text-sm">
                     <div>
