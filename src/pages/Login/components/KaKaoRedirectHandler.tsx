@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import instanceWithToken from "../../../apis/axiosInstance";
+import instanceWithToken from "../../../apis/axiosInstanceWithToken";
 
 type Props = {};
 

@@ -1,4 +1,3 @@
-// axiosInstance.js
 import axios from "axios";
 
 // 액세스 토큰을 가져오는 함수 (예: 로컬 스토리지에서 가져오기)
