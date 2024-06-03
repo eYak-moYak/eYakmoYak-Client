@@ -98,7 +98,7 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
         <h1 className="m-5 text-2xl">복용 중인 약</h1>
         <button
           onClick={handleButtonClick}
-          className="m-5 rounded bg-blue-500 p-2 text-white"
+          className="m-5 rounded bg-myblue p-2 text-white"
         >
           조회하기
         </button>
