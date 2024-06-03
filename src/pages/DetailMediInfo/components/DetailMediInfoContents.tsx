@@ -63,46 +63,60 @@ const DetailMediInfoContents: React.FC<Props> = ({ prescriptionId }) => {
   }
 
   return (
-    <>
-      <h1 className="mt-16 text-3xl">{prescriptionData.pre_name}</h1>
-      <div className="flex flex-col gap-2">
-        <div className="flex gap-20">
-          <p>처방병원</p>
+    <div className="rounded-lg bg-gray-100 p-16 shadow-md">
+      <h1 className="mb-8 text-center text-4xl font-bold">
+        {prescriptionData.pre_name}
+      </h1>
+      <div className="mb-8 flex flex-col gap-4 rounded-lg bg-white p-6 shadow-md">
+        <div className="flex justify-between">
+          <p className="font-semibold">처방병원</p>
           <p>{prescriptionData.hospital || "정보 없음"}</p>
         </div>
-        <div className="flex gap-20">
-          <p>처방약국</p>
+        <div className="flex justify-between">
+          <p className="font-semibold">처방약국</p>
           <p>{prescriptionData.pharmacy || "정보 없음"}</p>
         </div>
-        <div className="flex gap-20">
-          <p>처방날짜</p>
+        <div className="flex justify-between">
+          <p className="font-semibold">처방날짜</p>
           <p>{prescriptionData.pre_date || "정보 없음"}</p>
         </div>
       </div>
-      <h3 className="mt-24 text-xl">약 목록</h3>
-      {prescriptionData.medicines.map((medicine: Medicine, index: number) => (
-        <div key={index} className="flex flex-col gap-3">
-          <p className="mb-3 text-2xl">{medicine.name}</p>
-          <div className="flex gap-20">
-            <p>복용시간</p>
-            <div className="flex gap-2">
-              {medicine.dose_time.split(";").map((time) => (
-                <p key={time}>{timeMapping[time] || time}</p>
-              ))}
-              <p>{mealTimeMapping[medicine.meal_time] || medicine.meal_time}</p>
+      <h3 className="mb-6 text-center text-2xl font-bold">약 목록</h3>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {prescriptionData.medicines.map((medicine: Medicine, index: number) => (
+          <div
+            key={index}
+            className="flex flex-col gap-4 rounded-lg bg-white p-6 shadow-md"
+          >
+            <p className="mb-2 text-xl font-semibold">{medicine.name}</p>
+            <div className="flex justify-between">
+              <p className="font-semibold">복용시간</p>
+              <div className="flex gap-2">
+                {(medicine.dose_time || "").split(";").map((time) => (
+                  <p
+                    key={time}
+                    className="rounded-md bg-myblue px-2 py-1 text-white"
+                  >
+                    {timeMapping[time] || time}
+                  </p>
+                ))}
+                <p className="rounded-md bg-myblue px-2 py-1 text-white">
+                  {mealTimeMapping[medicine.meal_time] || medicine.meal_time}
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <p className="font-semibold">복용시작</p>
+              <p>{medicine.start_date}</p>
+            </div>
+            <div className="flex justify-between">
+              <p className="font-semibold">복용종료</p>
+              <p>{medicine.end_date}</p>
             </div>
           </div>
-          <div className="flex gap-20">
-            <p>복용시작</p>
-            <p>{medicine.start_date}</p>
-          </div>
-          <div className="flex gap-20">
-            <p>복용종료</p>
-            <p>{medicine.end_date}</p>
-          </div>
-        </div>
-      ))}
-    </>
+        ))}
+      </div>
+    </div>
   );
 };
 
