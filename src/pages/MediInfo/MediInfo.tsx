@@ -34,39 +34,43 @@ const MediInfo: React.FC<Props> = () => {
   };
 
   return (
-    <div className="flex h-5/6 items-end justify-center">
+    <div className="flex h-5/6 items-center justify-center bg-gray-100">
       <BodyLayout>
-        <div className="flex flex-wrap gap-4">
+        <div className="container mx-auto px-4">
           {apiData ? (
             <>
               {apiData.prescriptions && apiData.prescriptions.length > 0 && (
-                <div className="flex w-full flex-col">
-                  <h2 className="mb-4 ml-10 mt-10 flex-wrap text-2xl font-bold">
+                <div className="mb-10">
+                  <h2 className="mb-8 text-center text-3xl font-bold">
                     처방전 목록
                   </h2>
-                  <div className="m-3 grid grid-cols-1 gap-2 md:grid-cols-4 lg:grid-cols-4">
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {apiData.prescriptions.map(
                       (prescription: any, index: number) => (
                         <div
                           key={index}
-                          className="mb-4 w-full cursor-pointer rounded-lg border border-gray-300 p-4"
+                          className="relative rounded-lg bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl"
                           onClick={() => handleCardClick(prescription.pre_id)}
                         >
-                          <h2 className="text-xl font-bold">
+                          <h3 className="mb-2 text-xl font-bold">
                             {prescription.pre_name}
-                          </h2>
-                          <div>
-                            <p>병원: {prescription.hospital}</p>
-                            <p>약국: {prescription.pharmacy}</p>
-                            <p>
-                              처방 날짜: <br />
-                              {prescription.pre_date}
-                              <br />
-                              <br />
+                          </h3>
+                          <div className="text-gray-700">
+                            <p className="mb-1">
+                              <span className="font-medium">병원:</span>{" "}
+                              {prescription.hospital || "정보 없음"}
                             </p>
-                            <p>
-                              총 약 개수:
-                              {prescription.countMedicine}
+                            <p className="mb-1">
+                              <span className="font-medium">약국:</span>{" "}
+                              {prescription.pharmacy || "정보 없음"}
+                            </p>
+                            <p className="mb-1">
+                              <span className="font-medium">처방 날짜:</span>{" "}
+                              {prescription.pre_date || "정보 없음"}
+                            </p>
+                            <p className="mb-1">
+                              <span className="font-medium">총 약 개수:</span>{" "}
+                              {prescription.countMedicine || 0}
                             </p>
                           </div>
                         </div>
@@ -77,11 +81,11 @@ const MediInfo: React.FC<Props> = () => {
               )}
 
               {apiData.medicines && apiData.medicines.length > 0 && (
-                <div className="w-full">
-                  <h2 className="mb-4 ml-10 flex-wrap text-2xl font-bold">
+                <div>
+                  <h2 className="mb-8 text-center text-3xl font-bold">
                     약 목록
                   </h2>
-                  <div className="m-3 grid grid-cols-1 gap-2 md:grid-cols-4 lg:grid-cols-4">
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {apiData.medicines.map((medicine: any, index: number) => (
                       <MediCard
                         key={index}
@@ -94,7 +98,7 @@ const MediInfo: React.FC<Props> = () => {
               )}
             </>
           ) : (
-            <p>Loading...</p>
+            <p className="text-center text-gray-500">Loading...</p>
           )}
         </div>
       </BodyLayout>
