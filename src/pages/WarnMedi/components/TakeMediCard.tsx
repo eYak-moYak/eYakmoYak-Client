@@ -104,59 +104,72 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
   };
 
   return (
-    <section>
-      <div className="flex">
-        <h1 className="m-5 text-2xl">복용 중인 약</h1>
-        <button
-          onClick={handleSelectAll}
-          className="m-5 ml-0 rounded bg-mywhite p-2 text-myblue"
-        >
-          {allSelected ? "전체해제" : "전체선택"}
-        </button>
-        <button
-          onClick={handleButtonClick}
-          className="m-5  ml-0 rounded bg-myblue p-2 text-white"
-        >
-          조회하기
-        </button>
+    <section className="rounded-lg bg-gray-50 p-8 shadow-lg">
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-3xl font-bold text-gray-800">복용 중인 약</h1>
+        <div className="flex space-x-4">
+          <button
+            onClick={handleSelectAll}
+            className="rounded border border-gray-300 bg-white px-4 py-2 text-myblue hover:bg-gray-100"
+          >
+            {allSelected ? "전체해제" : "전체선택"}
+          </button>
+          <button
+            onClick={handleButtonClick}
+            className="rounded bg-myblue px-4 py-2 text-white hover:bg-myblue"
+          >
+            조회하기
+          </button>
+        </div>
       </div>
-      <div className="flex rounded-lg bg-white">
-        <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8">
-          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {Array.isArray(medicines) && medicines.length > 0 ? (
-              medicines.map((medicine, index) => (
-                <div className="card p-4" key={index}>
-                  <div className="flex w-full items-center justify-center overflow-hidden rounded-lg">
-                    {medicine.imgUrl !== "No Image" ? (
-                      <img src={medicine.imgUrl} alt={medicine.name} />
-                    ) : (
-                      <img
-                        width="140rem"
-                        src={registerMediIcon.defaultDrug}
-                        alt={medicine.name}
-                      />
-                    )}
-                  </div>
-                  <div className="mt-4 flex justify-between px-4 text-sm">
-                    <div>
-                      <h3 className="text-gray-700">{medicine.name}</h3>
-                      <p>복용 시작: {medicine.start_date}</p>
-                      <p>복용 종료: {medicine.end_date}</p>
-                    </div>
-                    <div>
-                      <input
-                        type="checkbox"
-                        checked={selectedMedicines.includes(medicine.name)}
-                        onChange={() => handleCheckboxChange(medicine.name)}
-                      />
-                    </div>
-                  </div>
+      <div className="rounded-lg bg-white p-6 shadow-md">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {Array.isArray(medicines) && medicines.length > 0 ? (
+            medicines.map((medicine, index) => (
+              <div
+                key={index}
+                className="card rounded-lg bg-gray-50 p-4 shadow-md"
+              >
+                <div className="mb-4 flex justify-center">
+                  {medicine.imgUrl !== "No Image" ? (
+                    <img
+                      className="rounded-lg"
+                      src={medicine.imgUrl}
+                      alt={medicine.name}
+                    />
+                  ) : (
+                    <img
+                      width="140rem"
+                      className="rounded-lg"
+                      src={registerMediIcon.defaultDrug}
+                      alt={medicine.name}
+                    />
+                  )}
                 </div>
-              ))
-            ) : (
-              <p className="text-gray-500">복용 중인 약이 없습니다.</p>
-            )}
-          </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-700">
+                      {medicine.name}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      복용 시작: {medicine.start_date}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      복용 종료: {medicine.end_date}
+                    </p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    className="h-5 w-5"
+                    checked={selectedMedicines.includes(medicine.name)}
+                    onChange={() => handleCheckboxChange(medicine.name)}
+                  />
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">복용 중인 약이 없습니다.</p>
+          )}
         </div>
       </div>
       <div ref={bottomRef}></div>
