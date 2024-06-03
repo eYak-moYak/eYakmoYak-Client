@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import headerIcon from "../../assets/header";
 
 interface HeaderProps {
@@ -9,6 +9,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ title }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("refresh");
@@ -28,17 +29,24 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
     }
   };
 
+  const getLinkClass = (path: string) =>
+    `flex items-center justify-center gap-2 ${
+      location.pathname === path ? "text-mypurple" : ""
+    }`;
+
+  const getIcon = (path: string, defaultIcon: string, activeIcon: string) => {
+    return location.pathname === path ? activeIcon : defaultIcon;
+  };
+
   return (
     <div className="mb-20 w-full bg-myblue">
-      <div className="flex justify-between p-3">
+      <div className="flex justify-between bg-myblue p-3">
         <div className="flex items-center">
-          <img src={headerIcon.logo} alt="이약머약 로고" />
-
+          <img src={headerIcon.logo} alt="이약머약 로고" className="mr-2" />
           <h1 className="text-3xl">{title}</h1>
         </div>
         <div className="flex items-center justify-center">
-          <img src={headerIcon.login} alt="이약머약 로고" />
-
+          <img src={headerIcon.login} alt="로그인 아이콘" className="mr-2" />
           <Link to="/" onClick={handleAuthClick}>
             {isLoggedIn ? "로그아웃" : "로그인 해주세요"}
           </Link>
@@ -47,39 +55,57 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
       <nav className="flex h-16 items-center justify-center bg-myblue">
         <ul className="mt-2 flex gap-14 rounded-t-xl bg-mywhite p-3 px-40">
           <li>
-            <Link
-              to="/upLoad"
-              className="flex items-center justify-center gap-2"
-            >
-              <img src={headerIcon.photoUpload} alt="사진업로드 아이콘" />
+            <Link to="/upLoad" className={getLinkClass("/upLoad")}>
+              <img
+                src={getIcon(
+                  "/upLoad",
+                  headerIcon.photoUpload,
+                  headerIcon.photoUploadActive, // 활성화된 상태의 아이콘
+                )}
+                alt="사진업로드 아이콘"
+              />
               사진업로드
             </Link>
           </li>
           <li>
             <Link
               to="/register-eachmedi"
-              className="flex items-center justify-center gap-2"
+              className={getLinkClass("/register-eachmedi")}
             >
-              <img src={headerIcon.register} alt="약 등록 아이콘" />
+              <img
+                src={getIcon(
+                  "/register-eachmedi",
+                  headerIcon.register,
+                  headerIcon.registerActive, // 활성화된 상태의 아이콘
+                )}
+                alt="약 등록 아이콘"
+              />
               약정보 등록
             </Link>
           </li>
-
           <li>
-            <Link
-              to="/mediinfo"
-              className="flex items-center justify-center gap-2"
-            >
-              <img src={headerIcon.info} alt="복약정보 아이콘" />
+            <Link to="/mediinfo" className={getLinkClass("/mediinfo")}>
+              <img
+                src={getIcon(
+                  "/mediinfo",
+                  headerIcon.info,
+                  headerIcon.infoActive, // 활성화된 상태의 아이콘
+                )}
+                alt="복약정보 아이콘"
+              />
               복약정보
             </Link>
           </li>
           <li>
-            <Link
-              to="/warnmedi"
-              className="flex items-center justify-center gap-2"
-            >
-              <img src={headerIcon.search} alt="병용금기약품 아이콘" />
+            <Link to="/warnmedi" className={getLinkClass("/warnmedi")}>
+              <img
+                src={getIcon(
+                  "/warnmedi",
+                  headerIcon.search,
+                  headerIcon.searchActive, // 활성화된 상태의 아이콘
+                )}
+                alt="병용금기약품 아이콘"
+              />
               병용금기약품
             </Link>
           </li>
@@ -88,4 +114,5 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
     </div>
   );
 };
+
 export default Header;
