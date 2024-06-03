@@ -1,5 +1,4 @@
 import React, { useState, ChangeEvent } from "react";
-import { ReactComponent as Down } from "../../../assets/registerMedi/down.svg";
 import AutoMediInput from "../../../components/Common/AutoMediInput";
 
 interface Medication {
@@ -9,26 +8,34 @@ interface Medication {
   meal_time: number;
 }
 
-interface SelectedTimes {
-  [key: string]: boolean;
-}
-
 interface RegisterDoctorMediFormProps {
   items: string[];
   onChange: (medications: Medication[]) => void;
 }
 
+const timeMapping: { [key: string]: string } = {
+  아침: "M",
+  점심: "L",
+  저녁: "D",
+  "취침 전": "N",
+};
+
+const reverseTimeMapping: { [key: string]: string } = {
+  M: "아침",
+  L: "점심",
+  D: "저녁",
+  N: "취침 전",
+};
+
 const RegisterDoctorMediForm: React.FC<RegisterDoctorMediFormProps> = ({
   items,
   onChange,
 }) => {
-  const [isTimeOpen, setIsTimeOpen] = useState<boolean>(false);
-  const [selectedTimes, setSelectedTimes] = useState<SelectedTimes>({});
   const [medications, setMedications] = useState<Medication[]>(
     items.map((item) => ({
       name: item,
       imgUrl: "",
-      dose_time: "아침",
+      dose_time: "",
       meal_time: 0,
     })),
   );
@@ -48,24 +55,37 @@ const RegisterDoctorMediForm: React.FC<RegisterDoctorMediFormProps> = ({
     onChange(newMedications);
   };
 
-  const handleDelete = (index: number) => () => {
-    const newMedications = medications.filter((_, i) => i !== index);
+  const handleDoseTimeChange = (index: number, time: string) => {
+    const newMedications = [...medications];
+    const medication = newMedications[index];
+    const timeCode = timeMapping[time];
+
+    const doseTimesArray = medication.dose_time.split(";").filter(Boolean);
+    if (doseTimesArray.includes(timeCode)) {
+      medication.dose_time = doseTimesArray
+        .filter((t) => t !== timeCode)
+        .join(";");
+    } else {
+      doseTimesArray.push(timeCode);
+      medication.dose_time = doseTimesArray.join(";");
+    }
+
     setMedications(newMedications);
     onChange(newMedications);
   };
 
-  const onTimeToggle = () => setIsTimeOpen(!isTimeOpen);
+  const handleMealTimeChange =
+    (index: number) => (e: ChangeEvent<HTMLSelectElement>) => {
+      const newMedications = [...medications];
+      newMedications[index].meal_time = parseInt(e.target.value, 10);
+      setMedications(newMedications);
+      onChange(newMedications);
+    };
 
-  const onTimeClicked = (value: string, index: number) => () => {
-    console.log(value);
-    setIsTimeOpen(false);
-  };
-
-  const handleTimeSelection = (time: string) => {
-    setSelectedTimes((prev) => ({
-      ...prev,
-      [time]: !prev[time],
-    }));
+  const handleDelete = (index: number) => () => {
+    const newMedications = medications.filter((_, i) => i !== index);
+    setMedications(newMedications);
+    onChange(newMedications);
   };
 
   return (
@@ -78,56 +98,58 @@ const RegisterDoctorMediForm: React.FC<RegisterDoctorMediFormProps> = ({
         </button>
       </div>
       {medications.map((medication, index) => (
-        <div key={index} className="mt-4 flex items-center justify-between">
-          <AutoMediInput
-            value={medication.name}
-            onChange={handleMedicationNameChange(index)}
-            onImageChange={handleImageChange(index)}
-          />
-          <button
-            className="h-7 w-14"
-            type="button"
-            onClick={handleDelete(index)}
-          >
-            삭제
-          </button>
+        <div key={index} className="mt-4 flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <AutoMediInput
+              value={medication.name}
+              onChange={handleMedicationNameChange(index)}
+              onImageChange={handleImageChange(index)}
+            />
+            <button
+              className="h-7 w-14"
+              type="button"
+              onClick={handleDelete(index)}
+            >
+              삭제
+            </button>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col">
+              <label>복용 방법</label>
+              <div>
+                {["아침", "점심", "저녁", "취침 전"].map((time) => (
+                  <button
+                    key={time}
+                    onClick={() => handleDoseTimeChange(index, time)}
+                    className={`border-myblue-500 mx-1 h-7 w-14 border-2 ${
+                      medication.dose_time
+                        .split(";")
+                        .includes(timeMapping[time])
+                        ? "bg-myblue"
+                        : "bg-mywhite"
+                    }`}
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor={`meal-time-${index}`}>복용 시간</label>
+              <select
+                id={`meal-time-${index}`}
+                value={medication.meal_time}
+                onChange={handleMealTimeChange(index)}
+              >
+                <option value={0}>식후 30분</option>
+                <option value={1}>식후 즉시</option>
+                <option value={2}>식전 30분</option>
+                <option value={3}>식전 즉시</option>
+              </select>
+            </div>
+          </div>
         </div>
       ))}
-      <div className="mt-6 flex items-center justify-between">
-        <p>복용 방법</p>
-        <div>
-          {["아침", "점심", "저녁", "취침 전"].map((time, index) => (
-            <button
-              key={index}
-              onClick={() => handleTimeSelection(time)}
-              className={`border-myblue-500 mx-1 h-7 w-14 border-2 ${
-                selectedTimes[time] ? "bg-myblue" : "bg-mywhite"
-              }`}
-            >
-              {time}
-            </button>
-          ))}
-        </div>
-        <div className="relative">
-          <div
-            className="flex w-28 items-center justify-center rounded-xl"
-            onClick={onTimeToggle}
-          >
-            복용시간
-            <Down className="h-5 w-4" />
-          </div>
-          <ul className="absolute z-10 flex w-full flex-col items-center justify-center gap-2 bg-mywhite">
-            {isTimeOpen && (
-              <>
-                <li onClick={onTimeClicked("식후 30분", 1)}>식후 30분</li>
-                <li onClick={onTimeClicked("식후 즉시", 2)}>식후 즉시</li>
-                <li onClick={onTimeClicked("식전 30분", 3)}>식전 30분</li>
-                <li onClick={onTimeClicked("식전 즉시", 4)}>식전 즉시</li>
-              </>
-            )}
-          </ul>
-        </div>
-      </div>
     </section>
   );
 };
