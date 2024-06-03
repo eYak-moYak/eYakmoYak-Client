@@ -22,9 +22,6 @@ const AutoMediInput: React.FC<AutoMediInputProps> = ({
   const [searchDrugs, setSearchDrugs] = useState<Drug[]>([]);
   const [openSearch, setOpenSearch] = useState(false);
 
-  /** 약 클릭하면 수행되는 함수
-   * 약 이미지 설정
-   */
   const handleOnClick = (drug: Drug) => {
     onChange({
       target: { value: drug.itemName },
@@ -35,12 +32,13 @@ const AutoMediInput: React.FC<AutoMediInputProps> = ({
 
   useEffect(() => {
     if (value) {
-      const exactMatch = searchDrugs.some((drug) => drug.itemName === value);
-      exactMatch ? setOpenSearch(false) : setOpenSearch(true);
+      setOpenSearch(true);
+      setSearchDrugs([]); // 검색어 변경 시 이전 결과 초기화
 
       const debounce = setTimeout(() => {
-        fetchDrugs(process.env.REACT_APP_API_KEY, value, 1, 1, 7);
-      }, 100); // 100ms 디바운스
+        fetchDrugs(process.env.REACT_APP_API_KEY, value, 1, 7);
+        fetchAdditionalDrugs(process.env.REACT_APP_API_KEY, value);
+      }, 100);
 
       return () => {
         clearTimeout(debounce);
@@ -55,7 +53,6 @@ const AutoMediInput: React.FC<AutoMediInputProps> = ({
     serviceKey: any,
     itemName: string,
     pageNo: number,
-    startPage: number,
     numOfRows: number,
   ) {
     try {
@@ -65,7 +62,6 @@ const AutoMediInput: React.FC<AutoMediInputProps> = ({
           serviceKey: decodeURIComponent(serviceKey),
           itemName: encodeURIComponent(itemName),
           pageNo,
-          startPage,
           numOfRows,
           type: "json",
         },
@@ -76,7 +72,14 @@ const AutoMediInput: React.FC<AutoMediInputProps> = ({
         response.data.body &&
         Array.isArray(response.data.body.items)
       ) {
-        setSearchDrugs(response.data.body.items);
+        const drugs = response.data.body.items.map((item: any) => ({
+          itemName: item.itemName,
+          entpName: item.entpName,
+          itemImage: item.itemImage || "", // 기본값으로 빈 문자열 사용
+        }));
+        setSearchDrugs((prevDrugs) =>
+          filterAndMergeDrugs([...prevDrugs, ...drugs]),
+        );
       } else {
         console.log("No items found or 'items' is not an array");
         setSearchDrugs([]);
@@ -87,13 +90,55 @@ const AutoMediInput: React.FC<AutoMediInputProps> = ({
     }
   }
 
+  async function fetchAdditionalDrugs(serviceKey: any, itemName: string) {
+    try {
+      const url = `${process.env.REACT_APP_MEDI_NAME_URL2}`;
+      const response = await axios.get(url, {
+        params: {
+          serviceKey: decodeURIComponent(serviceKey),
+          item_name: encodeURIComponent(itemName),
+          pageNo: 1,
+          numOfRows: 10,
+          type: "json",
+        },
+      });
+
+      if (
+        response.data &&
+        response.data.body &&
+        Array.isArray(response.data.body.items)
+      ) {
+        const drugs = response.data.body.items.map((item: any) => ({
+          itemName: item.ITEM_NAME,
+          entpName: item.ENTP_NAME,
+          itemImage: item.ITEM_IMAGE || "", // 기본값으로 빈 문자열 사용
+        }));
+        setSearchDrugs((prevDrugs) =>
+          filterAndMergeDrugs([...prevDrugs, ...drugs]),
+        );
+      } else {
+        console.log("No items found or 'items' is not an array");
+      }
+    } catch (error) {
+      console.error("Error fetching additional data:", error);
+    }
+  }
+
+  function filterAndMergeDrugs(drugs: Drug[]): Drug[] {
+    const uniqueDrugs = new Map<string, Drug>();
+    drugs.forEach((drug) => {
+      uniqueDrugs.set(drug.itemName, drug);
+    });
+    return Array.from(uniqueDrugs.values()).slice(0, 7); // 검색 결과를 7개로 제한
+  }
+
   return (
     <div>
       <input
         className="h-8 w-72"
         type="text"
         placeholder="조회할 약품의 이름을 입력하세요."
-        value={value}
+        value={value || ""}
         onChange={onChange}
       />
       {openSearch && searchDrugs.length > 0 && (
