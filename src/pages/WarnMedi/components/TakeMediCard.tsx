@@ -22,6 +22,7 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
 }) => {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [selectedMedicines, setSelectedMedicines] = useState<string[]>([]);
+  const [allSelected, setAllSelected] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,6 +57,16 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
         return [...prevSelectedMedicines, name];
       }
     });
+  };
+
+  const handleSelectAll = () => {
+    if (allSelected) {
+      setSelectedMedicines([]);
+    } else {
+      const allMedicineNames = medicines.map((medicine) => medicine.name);
+      setSelectedMedicines(allMedicineNames);
+    }
+    setAllSelected(!allSelected);
   };
 
   const handleButtonClick = async () => {
@@ -97,8 +108,14 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
       <div className="flex">
         <h1 className="m-5 text-2xl">복용 중인 약</h1>
         <button
+          onClick={handleSelectAll}
+          className="m-5 ml-0 rounded bg-mywhite p-2 text-myblue"
+        >
+          {allSelected ? "전체해제" : "전체선택"}
+        </button>
+        <button
           onClick={handleButtonClick}
-          className="m-5 rounded bg-myblue p-2 text-white"
+          className="m-5  ml-0 rounded bg-myblue p-2 text-white"
         >
           조회하기
         </button>
@@ -110,7 +127,7 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
               medicines.map((medicine, index) => (
                 <div className="card p-4" key={index}>
                   <div className="flex w-full items-center justify-center overflow-hidden rounded-lg">
-                    {medicine.imgUrl != "No Image" ? (
+                    {medicine.imgUrl !== "No Image" ? (
                       <img src={medicine.imgUrl} alt={medicine.name} />
                     ) : (
                       <img
