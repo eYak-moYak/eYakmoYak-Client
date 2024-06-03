@@ -1,4 +1,5 @@
 import { FC } from "react";
+import dayjs from "dayjs"; // 날짜 비교를 위해 dayjs 라이브러리 사용
 
 type Props = {
   medicine: {
@@ -11,9 +12,13 @@ type Props = {
 };
 
 const MediCard: FC<Props> = ({ medicine, onClick }) => {
+  const isExpired = dayjs(medicine.end_date).isBefore(dayjs(), "day");
+
   return (
     <div
-      className="h-3/12 lex-col flex flex-col gap-1 p-7"
+      className={`h-3/12 flex flex-col gap-1 p-7 ${
+        isExpired ? "bg-mybgcolor text-gray-600" : ""
+      }`}
       onClick={() => onClick(medicine.pre_id)}
     >
       <h1 className="h-32 w-full pb-3 pl-2 pt-2 text-2xl">{medicine.name}</h1>

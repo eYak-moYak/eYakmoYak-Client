@@ -58,8 +58,16 @@ const MediInfo: React.FC<Props> = () => {
                           <div>
                             <p>병원: {prescription.hospital}</p>
                             <p>약국: {prescription.pharmacy}</p>
-                            <p>처방 날짜: {prescription.pre_date}</p>
-                            <p>총 약 개수: {prescription.countMedicine}</p>
+                            <p>
+                              처방 날짜: <br />
+                              {prescription.pre_date}
+                              <br />
+                              <br />
+                            </p>
+                            <p>
+                              총 약 개수:
+                              {prescription.countMedicine}
+                            </p>
                           </div>
                         </div>
                       ),
