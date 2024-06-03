@@ -79,7 +79,7 @@ const DetailMediInfoContents: React.FC<Props> = ({ prescriptionId }) => {
           <p>{prescriptionData.pre_date || "정보 없음"}</p>
         </div>
       </div>
-      <h3 className="mt-5 text-xl">약 목록</h3>
+      <h3 className="mt-24 text-xl">약 목록</h3>
       {prescriptionData.medicines.map((medicine: Medicine, index: number) => (
         <div key={index} className="flex flex-col gap-3">
           <p className="mb-3 text-2xl">{medicine.name}</p>

@@ -49,7 +49,8 @@ const MediInfo: React.FC<Props> = () => {
                       (prescription: any, index: number) => (
                         <div
                           key={index}
-                          className="mb-4 w-full rounded-lg border border-gray-300 p-4"
+                          className="mb-4 w-full cursor-pointer rounded-lg border border-gray-300 p-4"
+                          onClick={() => handleCardClick(prescription.pre_id)}
                         >
                           <h2 className="text-xl font-bold">
                             {prescription.pre_name}
