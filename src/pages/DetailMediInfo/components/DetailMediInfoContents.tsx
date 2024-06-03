@@ -86,7 +86,9 @@ const DetailMediInfoContents: React.FC<Props> = ({ prescriptionId }) => {
           <div className="flex gap-20">
             <p>복용시간</p>
             <div className="flex gap-2">
-              <p>{timeMapping[medicine.dose_time] || medicine.dose_time}</p>
+              {medicine.dose_time.split(";").map((time) => (
+                <p key={time}>{timeMapping[time] || time}</p>
+              ))}
               <p>{mealTimeMapping[medicine.meal_time] || medicine.meal_time}</p>
             </div>
           </div>
