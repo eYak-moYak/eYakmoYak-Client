@@ -5,40 +5,36 @@ import BodyLayout from "../../components/Common/BodyLayout";
 import pageIcons from "../../assets/pageIcon";
 
 function PhotoUpload() {
-  const [file, setFile] = useState<File | null>(null);
-  const [showImages, setShowImages] = useState<string[]>([]);
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const selectedFile = event.target.files[0];
-      setFile(selectedFile);
 
       const formData = new FormData();
       formData.append("file", selectedFile);
 
       try {
-        const response = await axios.post(".../upload_image", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            accept: "application/json",
+        const response = await axios.post(
+          `${process.env.REACT_APP_DATA_URL}/upload_image`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              accept: "application/json",
+            },
           },
-        });
+        );
 
-        const imageUrl = response.data.url;
+        const items = response.data;
+        console.log(items);
 
-        setShowImages((prevImages) => [...prevImages, imageUrl]);
+        navigate("/register-doctormedi", { state: { items } });
       } catch (error) {
         console.error("Error uploading the image:", error);
       }
     }
-  };
-
-  const handleDelete = (idx: number) => {
-    setShowImages((prevImages) =>
-      prevImages.filter((_, index) => index !== idx),
-    );
   };
 
   const handleFileSelect = () => {
@@ -75,12 +71,6 @@ function PhotoUpload() {
           className="hidden"
         />
 
-        {showImages.map((src, idx) => (
-          <div key={idx}>
-            <img src={src} alt={`uploaded-${idx}`} />
-            <button onClick={() => handleDelete(idx)}>X</button>
-          </div>
-        ))}
         <button
           type="button"
           className="border-mybgcolor-50 h-10 w-2/6 rounded-full border-2 bg-mywhite"

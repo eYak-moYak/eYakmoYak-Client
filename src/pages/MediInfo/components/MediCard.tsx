@@ -13,7 +13,7 @@ type Props = {
 const MediCard: FC<Props> = ({ medicine, onClick }) => {
   return (
     <div
-      className="h-3/12 flex w-1/4 flex-col gap-1 bg-mywhite p-7"
+      className="h-3/12 lex-col flex flex-col gap-1 p-7"
       onClick={() => onClick(medicine.pre_id)}
     >
       <h1 className="h-32 w-full pb-3 pl-2 pt-2 text-2xl">{medicine.name}</h1>
