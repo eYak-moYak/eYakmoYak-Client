@@ -57,16 +57,16 @@ const MediInfo: React.FC<Props> = () => {
                           </h3>
                           <div className="text-gray-700">
                             <p className="mb-1">
-                              <span className="font-medium">병원:</span>{" "}
-                              {prescription.hospital || "정보 없음"}
+                              <span className="font-medium">병원:</span>
+                              {prescription.hospital || ""}
                             </p>
                             <p className="mb-1">
-                              <span className="font-medium">약국:</span>{" "}
-                              {prescription.pharmacy || "정보 없음"}
+                              <span className="font-medium">약국:</span>
+                              {prescription.pharmacy || ""}
                             </p>
                             <p className="mb-1">
                               <span className="font-medium">처방 날짜:</span>{" "}
-                              {prescription.pre_date || "정보 없음"}
+                              {prescription.pre_date || ""}
                             </p>
                             <p className="mb-1">
                               <span className="font-medium">총 약 개수:</span>{" "}

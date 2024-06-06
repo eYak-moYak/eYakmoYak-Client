@@ -70,15 +70,15 @@ const DetailMediInfoContents: React.FC<Props> = ({ prescriptionId }) => {
       <div className="mb-8 flex flex-col gap-4 rounded-lg bg-white p-6 shadow-md">
         <div className="flex justify-between">
           <p className="font-semibold">처방병원</p>
-          <p>{prescriptionData.hospital || "정보 없음"}</p>
+          <p>{prescriptionData.hospital || ""}</p>
         </div>
         <div className="flex justify-between">
           <p className="font-semibold">처방약국</p>
-          <p>{prescriptionData.pharmacy || "정보 없음"}</p>
+          <p>{prescriptionData.pharmacy || ""}</p>
         </div>
         <div className="flex justify-between">
           <p className="font-semibold">처방날짜</p>
-          <p>{prescriptionData.pre_date || "정보 없음"}</p>
+          <p>{prescriptionData.pre_date || ""}</p>
         </div>
       </div>
       <h3 className="mb-6 text-center text-2xl font-bold">약 목록</h3>
