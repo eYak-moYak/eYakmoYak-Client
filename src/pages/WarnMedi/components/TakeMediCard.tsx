@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import moment from "moment";
 import instanceWithToken from "../../../apis/axiosInstanceWithToken";
 import { Drug } from "./HeaderAutoMediInput";
 import registerMediIcon from "../../../assets/registerMedi";
@@ -36,8 +37,11 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
         );
 
         if (Array.isArray(response.data)) {
-          setMedicines(response.data);
-          console.log("API Response:", response.data);
+          const today = moment().startOf("day");
+          const filteredMedicines = response.data.filter((medicine) =>
+            moment(medicine.end_date).isAfter(today),
+          );
+          setMedicines(filteredMedicines);
         } else {
           console.error("Unexpected response data format:", response.data);
         }
@@ -89,7 +93,6 @@ const TakeMediCard: React.FC<TakeMediCardProps> = ({
         },
       );
 
-      console.log("API Response:", response.data);
       setWarningData(response.data);
       scrollToBottom();
     } catch (error) {
