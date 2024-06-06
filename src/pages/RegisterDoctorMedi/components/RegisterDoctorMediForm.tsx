@@ -35,7 +35,7 @@ const RegisterDoctorMediForm: React.FC<RegisterDoctorMediFormProps> = ({
     items.map((item) => ({
       name: item,
       imgUrl: "",
-      dose_time: "",
+      dose_time: "M;L;D", // 기본값으로 아침, 점심, 저녁이 선택된 상태로 설정
       meal_time: 0,
     })),
   );
