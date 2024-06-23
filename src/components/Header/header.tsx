@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import headerIcon from "../../assets/header";
 
 interface HeaderProps {
-  title: string; // 타이틀을 위한 props
+  title: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
@@ -12,7 +12,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
   const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem("refresh");
+    const token = localStorage.getItem("access");
     if (token) {
       setIsLoggedIn(true);
     } else {
@@ -22,9 +22,12 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 
   const handleAuthClick = () => {
     if (isLoggedIn) {
+      // 로그아웃 클릭시 토큰 삭제 후 로그아웃
+      localStorage.removeItem("access");
       setIsLoggedIn(false);
       navigate("/");
     } else {
+      // 로그인 페이지로 이동
       navigate("/");
     }
   };
@@ -60,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
                 src={getIcon(
                   "/upLoad",
                   headerIcon.photoUpload,
-                  headerIcon.photoUploadActive, // 활성화된 상태의 아이콘
+                  headerIcon.photoUploadActive,
                 )}
                 alt="사진업로드 아이콘"
               />
@@ -76,7 +79,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
                 src={getIcon(
                   "/register-eachmedi",
                   headerIcon.register,
-                  headerIcon.registerActive, // 활성화된 상태의 아이콘
+                  headerIcon.registerActive,
                 )}
                 alt="약 등록 아이콘"
               />
@@ -89,7 +92,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
                 src={getIcon(
                   "/mediinfo",
                   headerIcon.info,
-                  headerIcon.infoActive, // 활성화된 상태의 아이콘
+                  headerIcon.infoActive,
                 )}
                 alt="복약정보 아이콘"
               />
@@ -102,7 +105,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
                 src={getIcon(
                   "/warnmedi",
                   headerIcon.search,
-                  headerIcon.searchActive, // 활성화된 상태의 아이콘
+                  headerIcon.searchActive,
                 )}
                 alt="병용금기약품 아이콘"
               />
