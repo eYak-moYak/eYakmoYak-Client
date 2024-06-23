@@ -1,31 +1,99 @@
-import React, { useState } from "react";
-import { ReactComponent as Down } from "../../../assets/registerMedi/down.svg";
+import React, { useState, ChangeEvent } from "react";
 import AutoMediInput from "../../../components/Common/AutoMediInput";
 
-function RegisterDoctorMediForm() {
-  // 시간대 선택시 타입 반환
-  interface SelectedTimes {
-    [key: string]: boolean;
-  }
+interface Medication {
+  name: string;
+  imgUrl: string;
+  dose_time: string;
+  meal_time: number;
+}
 
-  const [isTimeOpen, setIsTimeOpen] = useState<boolean>(false);
-  const [selectedTimes, setSelectedTimes] = useState<SelectedTimes>({});
-  const [medicationName, setMedicationName] = useState<string>("");
-  const [imgUrl, setImgUrl] = useState<string>(""); // 이미지 URL 상태 추가
+interface RegisterDoctorMediFormProps {
+  items: string[];
+  onChange: (medications: Medication[]) => void;
+}
 
-  //   복용시간 토글
-  const onTimeToggle = () => setIsTimeOpen(!isTimeOpen);
-  //   복용시간 클릭시 상태변환
-  const onTimeClicked = (value: string, index: number) => () => {
-    console.log(value);
-    setIsTimeOpen(false);
+const timeMapping: { [key: string]: string } = {
+  아침: "M",
+  점심: "L",
+  저녁: "D",
+  "취침 전": "N",
+};
+
+const RegisterDoctorMediForm: React.FC<RegisterDoctorMediFormProps> = ({
+  items,
+  onChange,
+}) => {
+  const [medications, setMedications] = useState<Medication[]>(
+    items.map((item) => ({
+      name: item,
+      imgUrl: "",
+      // 기본값이 아침, 점심, 저녁이 선택된 상태로 설정
+      dose_time: "M;L;D",
+      meal_time: 0,
+    })),
+  );
+
+  const handleMedicationNameChange =
+    (index: number) => (e: ChangeEvent<HTMLInputElement>) => {
+      const newMedications = [...medications];
+      newMedications[index].name = e.target.value;
+      setMedications(newMedications);
+      onChange(newMedications);
+    };
+
+  const handleImageChange = (index: number) => (url: string) => {
+    const newMedications = [...medications];
+    newMedications[index].imgUrl = url;
+    setMedications(newMedications);
+    onChange(newMedications);
   };
-  // 아침,점심,저녁 선택시 시간대 반환.
-  const handleTimeSelection = (time: string) => {
-    setSelectedTimes((prev) => ({
-      ...prev,
-      [time]: !prev[time],
-    }));
+
+  const handleDoseTimeChange = (index: number, time: string) => {
+    const newMedications = [...medications];
+    const medication = newMedications[index];
+    const timeCode = timeMapping[time];
+
+    const doseTimesArray = medication.dose_time.split(";").filter(Boolean);
+    if (doseTimesArray.includes(timeCode)) {
+      medication.dose_time = doseTimesArray
+        .filter((t) => t !== timeCode)
+        .join(";");
+    } else {
+      doseTimesArray.push(timeCode);
+      medication.dose_time = doseTimesArray.join(";");
+    }
+
+    setMedications(newMedications);
+    onChange(newMedications);
+  };
+
+  const handleMealTimeChange =
+    (index: number) => (e: ChangeEvent<HTMLSelectElement>) => {
+      const newMedications = [...medications];
+      newMedications[index].meal_time = parseInt(e.target.value, 10);
+      setMedications(newMedications);
+      onChange(newMedications);
+    };
+
+  const handleDelete = (index: number) => () => {
+    const newMedications = medications.filter((_, i) => i !== index);
+    setMedications(newMedications);
+    onChange(newMedications);
+  };
+
+  const handleAddMedication = () => {
+    const newMedications = [
+      ...medications,
+      {
+        name: "",
+        imgUrl: "",
+        dose_time: "M;L;D", // 기본값으로 아침, 점심, 저녁이 선택된 상태로 설정
+        meal_time: 0,
+      },
+    ];
+    setMedications(newMedications);
+    onChange(newMedications);
   };
 
   return (
@@ -33,57 +101,69 @@ function RegisterDoctorMediForm() {
       <div className="flex">
         <p className="mb-8 text-xl">인식된 약</p>
 
-        <button className="ml-3 h-7 w-24" type="button">
+        <button
+          className="ml-3 h-7 w-24"
+          type="button"
+          onClick={handleAddMedication}
+        >
           약 추가하기
         </button>
       </div>
-      <div className="flex items-center justify-between">
-        <AutoMediInput
-          value={medicationName}
-          onChange={(e) => setMedicationName(e.target.value)}
-          onImageChange={(url) => setImgUrl(url)}
-        />
-        <button className="h-7 w-14" type="button">
-          삭제
-        </button>
-      </div>
-      <div className="mt-6 flex items-center justify-between">
-        <p>복용 방법</p>
-        <div>
-          {["아침", "점심", "저녁", "취침 전"].map((time, index) => (
+      {medications.map((medication, index) => (
+        <div key={index} className="mt-4 flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <AutoMediInput
+              value={medication.name}
+              onChange={handleMedicationNameChange(index)}
+              onImageChange={handleImageChange(index)}
+            />
             <button
-              key={index}
-              onClick={() => handleTimeSelection(time)}
-              className={`border-myblue-500 mx-1 h-7 w-14 border-2 ${
-                selectedTimes[time] ? "bg-myblue" : "bg-mywhite"
-              }`}
+              className="h-7 w-14"
+              type="button"
+              onClick={handleDelete(index)}
             >
-              {time}
+              삭제
             </button>
-          ))}
-        </div>
-        <div className="relative">
-          <div
-            className="flex w-28 items-center justify-center rounded-xl"
-            onClick={onTimeToggle}
-          >
-            복용시간
-            <Down className="h-5 w-4" />
           </div>
-          <ul className="absolute z-10 flex w-full flex-col items-center justify-center gap-2 bg-mywhite">
-            {isTimeOpen && (
-              <>
-                <li onClick={onTimeClicked("식후 30분", 1)}>식후 30분</li>
-                <li onClick={onTimeClicked("식후 즉시", 2)}>식후 즉시</li>
-                <li onClick={onTimeClicked("식전 30분", 3)}>식전 30분</li>
-                <li onClick={onTimeClicked("식전 즉시", 4)}>식전 즉시</li>
-              </>
-            )}
-          </ul>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col">
+              <label>복용 방법</label>
+              <div>
+                {["아침", "점심", "저녁", "취침 전"].map((time) => (
+                  <button
+                    key={time}
+                    onClick={() => handleDoseTimeChange(index, time)}
+                    className={`border-myblue-500 mx-1 h-7 w-14 border-2 ${
+                      medication.dose_time
+                        .split(";")
+                        .includes(timeMapping[time])
+                        ? "bg-myblue"
+                        : "bg-mywhite"
+                    }`}
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor={`meal-time-${index}`}>복용 시간</label>
+              <select
+                id={`meal-time-${index}`}
+                value={medication.meal_time}
+                onChange={handleMealTimeChange(index)}
+              >
+                <option value={0}>식후 30분</option>
+                <option value={1}>식후 즉시</option>
+                <option value={2}>식전 30분</option>
+                <option value={3}>식전 즉시</option>
+              </select>
+            </div>
+          </div>
         </div>
-      </div>
+      ))}
     </section>
   );
-}
+};
 
 export default RegisterDoctorMediForm;

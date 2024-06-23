@@ -8,7 +8,7 @@ type Props = {};
 const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
   (props, ref) => {
     const [isTimeOpen, setIsTimeOpen] = useState<boolean>(false);
-    const [doseTimes, setDoseTimes] = useState<string[]>([]);
+    const [doseTimes, setDoseTimes] = useState<string[]>(["M", "L", "D"]); // 기본값으로 아침, 점심, 저녁 선택
     const [mealTime, setMealTime] = useState<number | null>(null);
     const [selectedMealTime, setSelectedMealTime] = useState<string>(""); // 선택한 식사 후 복용 시간
     const [medicationName, setMedicationName] = useState<string>("");
@@ -77,7 +77,7 @@ const RegisterEachMediForm = forwardRef<HTMLFormElement, Props>(
           setMedicationName("");
           setStartDate("");
           setEndDate("");
-          setDoseTimes([]);
+          setDoseTimes(["M", "L", "D"]); // 초기화할 때도 기본값 설정
           setMealTime(null);
           setImgUrl("");
           setSelectedMealTime(""); // 초기화
