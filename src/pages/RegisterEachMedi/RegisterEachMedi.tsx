@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import RegisterMediForm from "./components/RegisterEachMediForm";
 import BodyLayout from "../../components/Common/BodyLayout";
 

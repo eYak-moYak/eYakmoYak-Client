@@ -1,4 +1,3 @@
-import React from "react";
 import { Reset } from "styled-reset";
 import "./index.css";
 import AppRouter from "./router/AppRouter";
