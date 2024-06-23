@@ -20,13 +20,6 @@ const timeMapping: { [key: string]: string } = {
   "취침 전": "N",
 };
 
-const reverseTimeMapping: { [key: string]: string } = {
-  M: "아침",
-  L: "점심",
-  D: "저녁",
-  N: "취침 전",
-};
-
 const RegisterDoctorMediForm: React.FC<RegisterDoctorMediFormProps> = ({
   items,
   onChange,
@@ -35,7 +28,8 @@ const RegisterDoctorMediForm: React.FC<RegisterDoctorMediFormProps> = ({
     items.map((item) => ({
       name: item,
       imgUrl: "",
-      dose_time: "M;L;D", // 기본값으로 아침, 점심, 저녁이 선택된 상태로 설정
+      // 기본값이 아침, 점심, 저녁이 선택된 상태로 설정
+      dose_time: "M;L;D",
       meal_time: 0,
     })),
   );
@@ -88,12 +82,30 @@ const RegisterDoctorMediForm: React.FC<RegisterDoctorMediFormProps> = ({
     onChange(newMedications);
   };
 
+  const handleAddMedication = () => {
+    const newMedications = [
+      ...medications,
+      {
+        name: "",
+        imgUrl: "",
+        dose_time: "M;L;D", // 기본값으로 아침, 점심, 저녁이 선택된 상태로 설정
+        meal_time: 0,
+      },
+    ];
+    setMedications(newMedications);
+    onChange(newMedications);
+  };
+
   return (
     <section className="my-16">
       <div className="flex">
         <p className="mb-8 text-xl">인식된 약</p>
 
-        <button className="ml-3 h-7 w-24" type="button">
+        <button
+          className="ml-3 h-7 w-24"
+          type="button"
+          onClick={handleAddMedication}
+        >
           약 추가하기
         </button>
       </div>
