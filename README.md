@@ -31,14 +31,18 @@ alt="기능2-대표이미지" />
 <div>처방 받은 복약 정보를 등록할 수 있습니다.</div>
 
 <h3> 3️⃣ 약국에서 구입한 개별 복약 정보 저장 </h3>
-<img src=""
+<img src="https://github.com/eYak-moYak/eYakmoYak-Client/assets/99737532/6b74bb5a-5eda-48fe-9d9d-610a0158e55a"
+alt="기능2-대표이미지" />
+<img src="https://github.com/eYak-moYak/eYakmoYak-Client/assets/99737532/84607681-413e-4756-bdd4-51d7438eb8d1"
 alt="기능2-대표이미지" />
 <div>약국에서 처장받은 개별 약을 등록할 수 있습니다.</div>
 
+
 <h3> 4️⃣ 병용 금기 약품 조회 </h3>
+<img width="1470" alt="스크린샷 2024-06-09 오후 4 11 39" src="https://github.com/eYak-moYak/eYakmoYak-Client/assets/99737532/85e7a27e-d453-41d6-a943-94366cec3ff2">
+
 <img src="https://github.com/eYak-moYak/eYakmoYak-Client/assets/99737532/ab31e4b1-5147-418c-97a2-e60a1d6e6e96"
   alt="기능3-대표이미지" />   
-<img width="1470" alt="스크린샷 2024-06-09 오후 4 11 39" src="https://github.com/eYak-moYak/eYakmoYak-Client/assets/99737532/85e7a27e-d453-41d6-a943-94366cec3ff2">
 
 <div>복용기간 내에 있는 지금 복용 중인 약품을 선택하여, 병용 금기인 약품을 조회합니다.</div>
 
